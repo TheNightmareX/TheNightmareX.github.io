@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Just Blogs">
+<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:site_name" content="Just Blogs">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Charles">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Just Blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Just Blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/16/returning-a-class-from-a-function/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/16/returning-a-class-from-a-function/" class="post-title-link" itemprop="url">从函数中返回一个类</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-07-16 18:48:04 / 修改时间：21:22:21" itemprop="dateCreated datePublished" datetime="2021-07-16T18:48:04+08:00">2021-07-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>听起来很简单嘛，不就<a target="_blank" rel="noopener" href="https://www.typescriptlang.org/play#code/KYDwDg9gTgLgBAMwK4DsDGMCWEVxsAZxgAoBKOAbwFgAoOONAGwEMCC4BJFFYKSgX1r0owGEii4uPKAG5agmkA">这样</a>么？</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Inner</span> </span>&#123;&#125;</span><br><span class="line">  <span class="keyword">return</span> Inner;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果当然是报错了。在这里<code>test()</code>没有注解返回值的类型，那么 TypeScript 自然而然会去推测返回值类型，而返回值是函数内部的<strong>不公开</strong>类型<code>Inner</code>，declaration 无法在函数外部表示函数内部的类型。</p>
+<p>那么要解决的核心问题就出现了：<strong>如何避免在函数的返回值中涉及函数内部的类型？</strong></p>
+<blockquote>
+<p>declaration 即设置 <code>&quot;declarations&quot;: true</code> 后编译产生的 <code>.d.ts</code> 文件。</p>
+</blockquote>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="匿名类"><a href="#匿名类" class="headerlink" title="匿名类"></a><a target="_blank" rel="noopener" href="https://www.typescriptlang.org/play#code/KYDwDg9gTgLgBAMwK4DsDGMCWEVxsAZxgAoBKOAbwFgAoOOKYGJKXNAGwEMCC4BBFDgCeAWwhJe1OvTgimACwgATMpQC+temoDctNUA">匿名类</a></h2><p>Typescript 会将匿名类的类型表示成一个又臭又长的<code>&#123;&#125;</code>类型，因不涉及函数内部的类型了，自然就不报错了：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="class"><span class="keyword">class</span> <span class="title">Anonymous</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="title">method</span>(<span class="params"></span>)</span> &#123;&#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>代码一目了然，写起来方便</li>
+<li>适用大部分简单情况</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>无法声明私有成员、保护乘员</li>
+<li>无法使用装饰器</li>
+</ul>
+<h2 id="断言返回值类型"><a href="#断言返回值类型" class="headerlink" title="断言返回值类型"></a><a target="_blank" rel="noopener" href="https://www.typescriptlang.org/play#code/KYDwDg9gTgLgBAMwK4DsDGMCWEVxsAZxgAoBKOAbwFgAoOONAGwEMCC4BJFFYKS2+vSLMsaOGDgBeOAGYA3AMFocRKEgzRiYKJgBuI4OKgQwvGAE8AXHFWYUAc3IUAvovoBbYDAAWEACZklK50cMGKFqacKMLowAAq5pHS1CH0ANoA0nB2cADWwOYQCFE8UAC61lylmWUKIc519BGGAMowIphoALLA7gBGvOzJbnCZ2bgAoiBMSH7AADz5hcXNRSW8ADRwAETaEDD7icDbAHwVeEdrVbw1jaFwAGSURvuHppXR7bEJkQ2KUF4kFBcNc+Kx+Kk4DwAO5wYgAOkRzCg9gI1gAwioYGoNFAAArI5iefBQAjzVbFUEnUgfGJoeJHO7OR5wNodbq9AakurBIA">断言返回值类型</a></h2><p>通过将返回值从自动推测出的内部类型<code>Inner</code>断言至一个等价的匿名<code>&#123;&#125;</code>类型，就可以完美避免在返回值类型中出现函数内部的类型：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Inner</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> p = <span class="number">3</span>;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params"><span class="keyword">private</span> property: <span class="built_in">string</span></span>)</span> &#123;&#125;</span><br><span class="line">    <span class="function"><span class="title">method</span>(<span class="params"></span>)</span> &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">type</span> InstanceType = &#123;</span><br><span class="line">    [K <span class="keyword">in</span> keyof Inner]: Inner[K];</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">type</span> StaticMembers = &#123;</span><br><span class="line">    [K <span class="keyword">in</span> Exclude&lt;keyof <span class="keyword">typeof</span> Inner, <span class="string">&quot;prototype&quot;</span>&gt;]: <span class="keyword">typeof</span> Inner[K];</span><br><span class="line">  &#125; &amp; &#123; <span class="attr">prototype</span>: InstanceType &#125;;</span><br><span class="line">  <span class="keyword">return</span> Inner <span class="keyword">as</span> &#123;</span><br><span class="line">    <span class="keyword">new</span> (...args: ConstructorParameters&lt;<span class="keyword">typeof</span> Inner&gt;): InstanceType;</span><br><span class="line">  &#125; &amp; StaticMembers;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>支持私有成员、保护成员、装饰器</li>
+</ul>
+<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>代码繁琐，不易理解</li>
+<li>子类无法访问保护成员</li>
+</ul>
+<h2 id="注解返回值类型"><a href="#注解返回值类型" class="headerlink" title="注解返回值类型"></a><a target="_blank" rel="noopener" href="https://www.typescriptlang.org/play#code/KYDwDg9gTgLgBASwHY2FAZgQwMbDgSSQGcZMlc4BvAWACg44BbYGACwgBMAKASgC44ANwgIOAbjoBfOnVCRYiFGiwUAwhGIwoAV2wxoVOgyTAA7nC5goEMGhgBPASSjIA5vwKayuCfThWIfQdbAUISb2BfBjABJG1GACM0X2laWXBoeHRtchgEDThUEl4BdU0dPQMaP2wAG0wiIk8TKEM-BnC87H84AF44AGYohjhsDWddfShLF0FMVH9rW1hHOGc3HipUkaYWdm5Nym24VKM4KBZtKCRm5Kk6IA">注解返回值类型</a></h2><p>通过使用外部类型标注函数的返回值来避免涉及函数内部类型：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> Instance &#123;</span><br><span class="line">  method(): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> Constructor &#123;</span><br><span class="line">  <span class="keyword">new</span> (property: <span class="built_in">string</span>): Instance;</span><br><span class="line">  prototype: Instance;</span><br><span class="line">  p: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>): <span class="title">Constructor</span> </span>&#123;</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Inner</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> p = <span class="number">3</span>;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params"><span class="keyword">private</span> property: <span class="built_in">string</span></span>)</span> &#123;&#125;</span><br><span class="line">    <span class="function"><span class="title">method</span>(<span class="params"></span>)</span> &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> Inner;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="优点-2"><a href="#优点-2" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>代码清晰、易于理解</li>
+<li>支持私有成员、保护成员、装饰器</li>
+</ul>
+<h3 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>代码大量重复</li>
+<li>子类无法访问保护成员</li>
+</ul>
+<h2 id="拓展：Mixins"><a href="#拓展：Mixins" class="headerlink" title="拓展：Mixins"></a>拓展：Mixins</h2><p>在翻某库的代码时，发现了<a target="_blank" rel="noopener" href="https://www.typescriptlang.org/play#code/KYDwDg9gTgLgBAMwK4DsDGMCWEVxsAZxgB4AVOUfFAEwLgG84VgB3OACgDpuBDKAcwIAuODxQBPANoBdAJQix4uAF8AfOwBGPAsFLiwwEaVkMAsACg4cNABttdAJIpmUCiCq04WnXoNnLVnBEPFhoQTAhmGgAClAQBrBKALxwAEQ8GTypANwWgdY4RFBIGNBcvALCohIyJvR5+UFICeyyuQFWyg1WALbAMAAWENStDF0B41ZQ-UhQuE4u7eNAA">这么一种很玄学的方法</a>：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>&lt;<span class="title">T</span> <span class="title">extends</span> </span>&#123; <span class="keyword">new</span> (...args: <span class="built_in">any</span>[]): <span class="built_in">any</span> &#125;&gt;(baseType: T) &#123;</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Inner</span> <span class="keyword">extends</span> <span class="title">baseType</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> staticProperty = <span class="string">&quot;aaaa&quot;</span>;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params">...args: <span class="built_in">any</span>[]</span>)</span> &#123;</span><br><span class="line">      <span class="built_in">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">method</span>(<span class="params"></span>)</span> &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> Inner;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译器将其理解为 Mixin，限制是构造函数的参数必须是<code>...args: any[]</code>，否则会报错：</p>
+<blockquote>
+<p>A mixin class must have a constructor with a single rest parameter of type ‘any[]’.(2545)</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/07/const-type-assertion/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/07/const-type-assertion/" class="post-title-link" itemprop="url">`const`类型断言</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-06-07 10:21:45" itemprop="dateCreated datePublished" datetime="2021-06-07T10:21:45+08:00">2021-06-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-16 21:22:41" itemprop="dateModified" datetime="2021-07-16T21:22:41+08:00">2021-07-16</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><code>as const</code> 将原类型断言为<strong>不可变类型（只读类型）</strong>，在一些特定场景下需要用到。</p>
+<p><a target="_blank" rel="noopener" href="https://www.typescriptlang.org/play#code/GYVwdgxgLglg9mABMMAKADgLkQIgIY6IA+uARoSThDgJSIDeAsAFCKIQIDOUiA7jFAAWcEFADCXHgF5EAAwAk9dAF8AtAC9N62QG5EAen2JuAJxhgA5izYcw3PgMES70uYpUatsxHk7tJeoa4eJ6aFGSh6uFUkTgsyiyJzLb2APIACgCiAEoAggAqqdkAygD6AOoAkvkAEqWpAKr5pWKpAHLF+YgyANo4AKYAjjgANLhg-aO4FlBTOAA2swC6gUam5hY9SywpPBk5BUVlVbUt7Z3diH1DcxNzM3OLOEs+fruriCb9eAAmCPMATyuA2GYxwdzBDzBT22zB2kkQcFIACtyo5UqJnPYZPQfNh8FNSPjyIhlDoWEEmMwgmw2HhsOtLOTqUZaYgicYoGYmRSjAk4ckEUjUY4sa5cfTgoTiYRlK9-C5mZTeWzPt8-mBAXipUrWbSvr9-kCOThyLrSUA">DIY</a></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params">p: <span class="string">&quot;a&quot;</span> | <span class="string">&quot;b&quot;</span> | <span class="string">&quot;c&quot;</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> withoutConst = <span class="string">`<span class="subst">$&#123;p&#125;</span>-zzzz`</span>; <span class="comment">// string</span></span><br><span class="line">  <span class="keyword">const</span> withConst = <span class="string">`<span class="subst">$&#123;p&#125;</span>-zzzz`</span> <span class="keyword">as</span> <span class="keyword">const</span>; <span class="comment">// &quot;a-zzzz&quot; | &quot;b-zzzz&quot; | &quot;c-zzzz&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> OPERATORS_WITH_OUT_CONST = [<span class="string">&quot;eq&quot;</span>, <span class="string">&quot;ne&quot;</span>, <span class="string">&quot;gt&quot;</span>, <span class="string">&quot;lt&quot;</span>]; <span class="comment">// string[]</span></span><br><span class="line"><span class="keyword">const</span> OPERATORS_WITH_CONST = [<span class="string">&quot;eq&quot;</span>, <span class="string">&quot;ne&quot;</span>, <span class="string">&quot;gt&quot;</span>, <span class="string">&quot;lt&quot;</span>] <span class="keyword">as</span> <span class="keyword">const</span>; <span class="comment">// readonly [&quot;eq&quot;, &quot;ne&quot;, &quot;gt&quot;, &quot;lt&quot;]</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> objWithOutConst = &#123; <span class="attr">a</span>: <span class="string">&quot;a&quot;</span>, <span class="attr">b</span>: <span class="string">&quot;b&quot;</span> &#125;;</span><br><span class="line"><span class="comment">// &#123;</span></span><br><span class="line"><span class="comment">//     a: string;</span></span><br><span class="line"><span class="comment">//     b: string;</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> objWithConst = &#123; <span class="attr">a</span>: <span class="string">&quot;a&quot;</span>, <span class="attr">b</span>: <span class="string">&quot;b&quot;</span> &#125; <span class="keyword">as</span> <span class="keyword">const</span>;</span><br><span class="line"><span class="comment">// &#123;</span></span><br><span class="line"><span class="comment">//     readonly a: &quot;a&quot;;</span></span><br><span class="line"><span class="comment">//     readonly b: &quot;b&quot;;</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/07/defining-default-value-of-class-properties/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/07/defining-default-value-of-class-properties/" class="post-title-link" itemprop="url">定义类的属性初始值</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-06-07 10:09:57" itemprop="dateCreated datePublished" datetime="2021-06-07T10:09:57+08:00">2021-06-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-01 14:03:44" itemprop="dateModified" datetime="2021-07-01T14:03:44+08:00">2021-07-01</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>属性初始值的赋值发生在构造函数调用之前，定义类的属性初始值时是可以访问某些对象的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Super &#123;</span><br><span class="line">  superProp = &quot;property defined on the super class&quot;;</span><br><span class="line"></span><br><span class="line">  superMethod() &#123;</span><br><span class="line">    return &quot;returned from the method defined on the super class&quot;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Derived extends Super &#123;</span><br><span class="line">  superProp = &quot;override the property on the super class&quot;;</span><br><span class="line">  accessThis = this.superProp;</span><br><span class="line">  accessSuper = super.superProp;</span><br><span class="line">  accessSuperMethod = this.superMethod();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/20/this-is-also-a-type/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/20/this-is-also-a-type/" class="post-title-link" itemprop="url">`this`也是一个类型</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-20 20:14:23" itemprop="dateCreated datePublished" datetime="2021-04-20T20:14:23+08:00">2021-04-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-16 21:26:25" itemprop="dateModified" datetime="2021-07-16T21:26:25+08:00">2021-07-16</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这两个接口是等价的</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> Test&lt;T1, T2, T3, T4&gt; &#123;</span><br><span class="line">  returnThis(): Test&lt;T1, T2, T3, T4&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> Test&lt;T1, T2, T3, T4&gt; &#123;</span><br><span class="line">  returnThis(): <span class="built_in">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/18/resolve-ts-non-relative-imports-for-jest/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/18/resolve-ts-non-relative-imports-for-jest/" class="post-title-link" itemprop="url">Jest解析TS非相对路径模块导入</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-18 17:13:42" itemprop="dateCreated datePublished" datetime="2021-04-18T17:13:42+08:00">2021-04-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-16 21:22:33" itemprop="dateModified" datetime="2021-07-16T21:22:33+08:00">2021-07-16</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Typesciprt 提供<code>compilerOptions.baseUrl</code>选项来配置导入<em>非相对路径模块</em>时的根路径</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// tsconfig.json</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;baseUrl&quot;</span>: <span class="string">&quot;./&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Typescript 可正常编译，但 Jest 报错</p>
+<blockquote>
+<p>Cannot find module ‘xxx’ from ‘xxx’</p>
+</blockquote>
+<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><p>Jest 不读取 tsconfig，但提供<a href="(https://jestjs.io/docs/configuration#modulepaths-arraystring)">自己的路径选项</a>:<code>rootDir</code>和<code>modulePaths</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;rootDir&quot;</span>: <span class="string">&quot;./&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;modulePaths&quot;</span>: [<span class="string">&quot;&lt;rootDir&gt;/&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>目前(<a href="mailto:&#78;&#101;&#x73;&#116;&#74;&#x53;&#64;&#118;&#x37;&#46;&#54;&#x2e;&#x31;&#x33;">&#78;&#101;&#x73;&#116;&#74;&#x53;&#64;&#118;&#x37;&#46;&#54;&#x2e;&#x31;&#x33;</a>) 使用生成器生成的项目中未配置这些选项</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/18/declaring-type-of-process-env/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/18/declaring-type-of-process-env/" class="post-title-link" itemprop="url">补充声明`process.env`的类型</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-18 17:11:15" itemprop="dateCreated datePublished" datetime="2021-04-18T17:11:15+08:00">2021-04-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-16 21:26:53" itemprop="dateModified" datetime="2021-07-16T21:26:53+08:00">2021-07-16</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="built_in">global</span> &#123;</span><br><span class="line">  <span class="comment">// eslint-disable-next-line @typescript-eslint/no-namespace</span></span><br><span class="line">  <span class="keyword">namespace</span> NodeJS &#123;</span><br><span class="line">    <span class="keyword">export</span> <span class="keyword">interface</span> ProcessEnv &#123;</span><br><span class="line">      <span class="attr">key</span>: <span class="built_in">string</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/06/async-django-views/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/06/async-django-views/" class="post-title-link" itemprop="url">基于类的异步Django/DRF视图的实现</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-06 14:33:14" itemprop="dateCreated datePublished" datetime="2020-12-06T14:33:14+08:00">2020-12-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-01 14:13:44" itemprop="dateModified" datetime="2021-07-01T14:13:44+08:00">2021-07-01</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>原生 Django 只专注于 HTTP<br>在 3.0 后才<a target="_blank" rel="noopener" href="https://docs.djangoproject.com/zh-hans/3.1/topics/async/">原生支持了异步视图</a><br>且原生 runserver 命令还只能 WSGI 启动<br>肥肠滴蛋疼<br><strong>p.s. 官方文档对于异步类视图的说明有误 详见下面正确食用方法</strong></p>
+<p>Django 2.x 时代起便存在的 Django 拓展包<a target="_blank" rel="noopener" href="https://channels.readthedocs.io/">Channels</a>则支持任何的 Web 协议<br>e.g. HTTP、WebSocket<br>且修改了 runserver 命令，使其能以 ASGI 模式启动<br>这玩意妥妥的 Django 的 ASGI 开发必备品<br>（事实上 ASGI 规范就是为 Channels 设计的</p>
+<p>作为使用 Django 进行前后端分离开发的首选<br><a target="_blank" rel="noopener" href="https://www.django-rest-framework.org/">Django REST Framework</a>(DRF)<br>为使用 Django 开发 RESTful API 提供了诸多开箱即用的功能<br>但其尚未支持异步</p>
+<p>最近尝试开发聊天室，需要长轮询或者 WebSocket<br>WebSocket 从来没有涉及过，于是我选择了长轮询<br>不管选哪个，都需要转向使用 ASGI 协议，先把 Channels 装了<br>现在请求-控制是异步的了，视图还是同步的，还是不能写异步代码<br>为了将 DRF 的各种视图转换为异步视图，我选择通过研究 DRF 视图的内部实现，写一个 Mixin 类覆盖/转换关键的同步方法，所有需要转换为异步视图的视图都将此 Mixin 作为第一个继承类，即可实现最终效果</p>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>DRF 的所有视图的基类是<code>APIView</code>，<code>APIView</code>又继承 Django 原生的<code>View</code><br>所以首先要搞清楚这个原生<code>View</code>的运作方式</p>
+<h3 id="View"><a href="#View" class="headerlink" title="View"></a>View</h3><p>在<code>urlpatterns</code>中使用*基于类的视图(Class-Based Views)*时，需要使用<code>YourView.as_view()</code>的返回值作为视图</p>
+<p>和猜想一致，<code>as_view()</code>会返回一个传统的*基于函数的视图(Function-Based View)*，而这个函数视图的关键部分在最后，其返回了<code>dispatch()</code>方法的返回值，而<code>dispatch()</code>方法根据<code>request</code>的 HTTP 方法返回匹配的一个处理方法方法(e.g. <code>get()</code> <code>post()</code>)的返回值(一个<code>HttpResponse</code>对象)，剩余便是 Django 内部的事情了，我们无需关心。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># View</span></span><br><span class="line"><span class="meta">    @classonlymethod</span></span><br><span class="line"> <span class="comment"># we can use `@classmethod` instead</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">as_view</span>(<span class="params">cls, **initkwargs</span>):</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># something not important</span></span><br><span class="line">...</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">view</span>(<span class="params">request, *args, **kwargs</span>):</span></span><br><span class="line">            <span class="comment"># something not important</span></span><br><span class="line">...</span><br><span class="line">            <span class="keyword">return</span> self.dispatch(request, *args, **kwargs)</span><br><span class="line">        <span class="comment"># something not important</span></span><br><span class="line">...</span><br><span class="line">        <span class="keyword">return</span> view</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># View</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dispatch</span>(<span class="params">self, request, *args, **kwargs</span>):</span></span><br><span class="line">        <span class="keyword">if</span> request.method.lower() <span class="keyword">in</span> self.http_method_names:</span><br><span class="line">            handler = <span class="built_in">getattr</span>(self, request.method.lower(), self.http_method_not_allowed)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            handler = self.http_method_not_allowed</span><br><span class="line">        <span class="keyword">return</span> handler(request, *args, **kwargs)</span><br></pre></td></tr></table></figure>
+
+<p>Django 对于异步视图的识别使用的是<code>asyncio.iscoroutinefunction()</code><br>要想使一个类视图被识别为异步视图，就得使它的<code>as_view()</code>方法返回的函数视图是一个异步函数，于是可以这样重写<code>as_view()</code><br>p.s. 这其实已经是重写<code>as_view()</code>方法的最终版本了</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AsyncViewWrap</span>:</span></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">as_view</span>(<span class="params">cls, *args, **initkwargs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;Make Django process the view as an async view.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        view = <span class="built_in">super</span>().as_view(*args, **initkwargs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">async_view</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">            <span class="comment"># await view() -&gt; await dispatch() -&gt; await get()/post()/...</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">await</span> view(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> async_view</span><br></pre></td></tr></table></figure>
+
+<p>现在将<code>AsyncViewWrap</code>作为继承的第一个类的原生类视图可以被识别为异步视图了，并且我们也可以(截至目前，<strong>必须</strong>)把处理方法(e.g. <code>get()</code>)写成<strong>异步</strong>函数了</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyView</span>(<span class="params">AsyncViewWrap, View</span>):</span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get</span>(<span class="params">request: HttpRequest</span>):</span></span><br><span class="line">        <span class="keyword">return</span> HttpResponse()</span><br></pre></td></tr></table></figure>
+
+<h3 id="APIView"><a href="#APIView" class="headerlink" title="APIView"></a>APIView</h3><p><code>APIView</code>将<code>as_view()</code>方法再略加包装修饰，但主要部分是差不多的，都是返回一个函数视图，此函数视图返回<code>dispatch()</code>方法返回的响应，因此<code>as_view()</code>方法是不用动的</p>
+<p>但是<code>APIView</code>对于<code>dispatch()</code>方法做了一些明显改动，并不直接返回处理方法(e.g. <code>get()</code> <code>post()</code> … 下文的<em>处理方法</em>都指这些)的返回值了，而是先调用涉及 ORM 操作的<code>initial()</code>，获取响应后调用<code>finalize_response()</code>对其进行进一步加工处理</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># APIView</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dispatch</span>(<span class="params">self, request, *args, **kwargs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        `.dispatch()` is pretty much the same as Django&#x27;s regular dispatch,</span></span><br><span class="line"><span class="string">        but with extra hooks for startup, finalize, and exception handling.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.args = args</span><br><span class="line">        self.kwargs = kwargs</span><br><span class="line">        request = self.initialize_request(request, *args, **kwargs)</span><br><span class="line">        self.request = request</span><br><span class="line">        self.headers = self.default_response_headers  <span class="comment"># deprecate?</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            self.initial(request, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># Get the appropriate handler method</span></span><br><span class="line">            <span class="keyword">if</span> request.method.lower() <span class="keyword">in</span> self.http_method_names:</span><br><span class="line">                handler = <span class="built_in">getattr</span>(self, request.method.lower(),</span><br><span class="line">                                  self.http_method_not_allowed)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                handler = self.http_method_not_allowed</span><br><span class="line"></span><br><span class="line">            response = handler(request, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> exc:</span><br><span class="line">            response = self.handle_exception(exc)</span><br><span class="line"></span><br><span class="line">        self.response = self.finalize_response(request, response, *args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> self.response</span><br></pre></td></tr></table></figure>
+
+<p>由于<code>initial()</code>方法涉及 ORM 操作，如上文所述，必须同步调用，在异步函数中调用涉及 ORM 操作的函数需要先调用<code>asgiref.sync.sync_to_async()</code>对其进行包装，直接在异步函数中调用会报错（原理不明<br>又由于<code>finalize_response()</code>方法预期传入一个<code>Response</code>或<code>HttpResponse</code>对象，但我们将其转换成异步视图后，传入的值成了一个 awaitable 对象，需要<code>await</code>才能获取期望的<code>Response</code>或<code>HttpResponse</code><br>又又由于内置的一些处理方法是涉及 ORM 操作的同步处理方法，需要包装<br>又又又由于两个过程都是在<code>dispatch()</code>方法的中间调用的<br>所以<code>dispatch()</code>的重写就不那么优雅了，我们需要将其复制粘贴一份后再修改<br>p.s. 尚在寻找更优解</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AsyncViewWrap</span>:</span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">dispatch</span>(<span class="params">self, request, *args, **kwargs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;Add async support.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.args = args</span><br><span class="line">        self.kwargs = kwargs</span><br><span class="line">        request = self.initialize_request(request, *args, **kwargs)</span><br><span class="line">        self.request = request</span><br><span class="line">        self.headers = self.default_response_headers</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">await</span> sync_to_async(self.initial)(request, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> request.method.lower() <span class="keyword">in</span> self.http_method_names:</span><br><span class="line">                handler = <span class="built_in">getattr</span>(self, request.method.lower(),</span><br><span class="line">                                  self.http_method_not_allowed)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                handler = self.http_method_not_allowed</span><br><span class="line"></span><br><span class="line">            <span class="comment"># accept both async and sync handlers</span></span><br><span class="line">            <span class="comment"># built-in handlers are sync handlers</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> asyncio.iscoroutinefunction(handler):</span><br><span class="line">                handler = sync_to_async(handler)</span><br><span class="line">            response = <span class="keyword">await</span> handler(request, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> exc:</span><br><span class="line">            response = self.handle_exception(exc)</span><br><span class="line"></span><br><span class="line">        self.response = self.finalize_response(</span><br><span class="line">            request, response, *args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> self.response</span><br></pre></td></tr></table></figure>
+
+<h3 id="GenericViews-amp-Mixins-amp-Viewsets"><a href="#GenericViews-amp-Mixins-amp-Viewsets" class="headerlink" title="GenericViews &amp; Mixins &amp; Viewsets"></a>GenericViews &amp; Mixins &amp; Viewsets</h3><p>Mixins 提供一系列处理逻辑并返回 Response 对象的方法<br>GenericViews 通过在处理方法中直接返回这些方法的返回值来使用 Mixin 提供的功能<br>ViewSets 也依然是将各种方法映射到那么几个处理方法里<br>而同步处理方法都会被转换，无需操心<br>所以不用动直接拿来用就行</p>
+<h2 id="成品"><a href="#成品" class="headerlink" title="成品"></a>成品</h2><p>由于<code>dispatch()</code>的不优雅实现，只确保兼容 DRF 3.12.2，其他版本请自行实验</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AsyncViewWrap</span>:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Provides async view compatible support for DRF Views and ViewSets.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    This must be the first inherited class.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">as_view</span>(<span class="params">cls, *args, **initkwargs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;Make Django process the view as an async view.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        view = <span class="built_in">super</span>().as_view(*args, **initkwargs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">async_view</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">            <span class="comment"># wait for the `dispatch` method</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">await</span> view(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> async_view</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">dispatch</span>(<span class="params">self, request, *args, **kwargs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;Add async support.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.args = args</span><br><span class="line">        self.kwargs = kwargs</span><br><span class="line">        request = self.initialize_request(request, *args, **kwargs)</span><br><span class="line">        self.request = request</span><br><span class="line">        self.headers = self.default_response_headers</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">await</span> sync_to_async(self.initial)(request, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> request.method.lower() <span class="keyword">in</span> self.http_method_names:</span><br><span class="line">                handler = <span class="built_in">getattr</span>(self, request.method.lower(),</span><br><span class="line">                                  self.http_method_not_allowed)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                handler = self.http_method_not_allowed</span><br><span class="line"></span><br><span class="line">            <span class="comment"># accept both async and sync handlers</span></span><br><span class="line">            <span class="comment"># built-in handlers are sync handlers</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> asyncio.iscoroutinefunction(handler):</span><br><span class="line">                handler = sync_to_async(handler)</span><br><span class="line">            response = <span class="keyword">await</span> handler(request, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> exc:</span><br><span class="line">            response = self.handle_exception(exc)</span><br><span class="line"></span><br><span class="line">        self.response = self.finalize_response(</span><br><span class="line">            request, response, *args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> self.response</span><br></pre></td></tr></table></figure>
+
+<p>任何类视图要转换为异步视图只需将此类作为第一项继承类即可</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/10/debug-vue-projects-without-cors/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/10/debug-vue-projects-without-cors/" class="post-title-link" itemprop="url">Vue-CLI项目不跨域调试调试后端</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-10 20:32:35" itemprop="dateCreated datePublished" datetime="2020-11-10T20:32:35+08:00">2020-11-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-01 14:20:11" itemprop="dateModified" datetime="2021-07-01T14:20:11+08:00">2021-07-01</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Django Development Server: <em><a href="http://localhost:**8000">http://localhost:**8000</a>**</em><br>Vue Development Server: <em><a href="http://localhost:**8080">http://localhost:**8080</a>**</em></p>
+<p>无需配置跨域，通过 vue-cli<a target="_blank" rel="noopener" href="https://cli.vuejs.org/zh/config/#devserver-proxy">配置代理</a>，实现将发往 localhost:8000/api 的请求转发到 localhost:8080/api 等</p>
+<p>Django 后端的 vue.config.js 配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  devServer: &#123;</span><br><span class="line">    proxy: &#123;</span><br><span class="line">      &quot;/api&quot;: &#123; target: &quot;http://localhost:8000&quot; &#125;,</span><br><span class="line">      &quot;/static&quot;: &#123; target: &quot;http://localhost:8000&quot; &#125;,</span><br><span class="line">      &quot;/admin&quot;: &#123; target: &quot;http://localhost:8000&quot; &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/25/script-labels-in-html/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/25/script-labels-in-html/" class="post-title-link" itemprop="url">HTML中的`script`标签</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-25 16:41:59" itemprop="dateCreated datePublished" datetime="2020-10-25T16:41:59+08:00">2020-10-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-16 21:21:48" itemprop="dateModified" datetime="2021-07-16T21:21:48+08:00">2021-07-16</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="传统-script"><a href="#传统-script" class="headerlink" title="传统 script"></a>传统 script</h2><p>传统 script 指所有非 ES6 模块化结构的 script</p>
+<h4 id="lt-body-gt-中的-lt-script-gt"><a href="#lt-body-gt-中的-lt-script-gt" class="headerlink" title="&lt;body&gt;中的&lt;script&gt;"></a>&lt;body&gt;中的&lt;script&gt;</h4><p>阻塞 dom 加载，下载并执行完毕后继续 dom 的加载<br>这是由于这类 script 可能会用于执行渲染操作以改变向用户呈现出的第一眼效果<br>但如果该 script 的内容是其他操作<br>则会影响页面呈现速度，降低用户体验，且语义性差，不符合人类直觉<br>如果 script 不改变第一眼呈现时的效果，则不建议使用这种<br>通常只有 UI 框架的 script 会放在&lt;body&gt;的底部，因为它会改变第一眼的呈现效果</p>
+<h4 id="lt-head-gt-中的-lt-script-gt-window-onload"><a href="#lt-head-gt-中的-lt-script-gt-window-onload" class="headerlink" title="&lt;head&gt;中的&lt;script&gt;+window.onload"></a>&lt;head&gt;中的&lt;script&gt;+window.onload</h4><p>下载过程阻塞 dom 加载<br>但 window.onload 监听器中的主要代码会等待 dom 加载渲染完毕后执行<br>同样会影响页面呈现速度，语义性差，但较上一种要好些<br>不论你的 script 是做什么的，都<strong>不推荐</strong>这种做法，因为已经有替代方案</p>
+<h4 id="lt-head-gt-中的-lt-script-defer-gt"><a href="#lt-head-gt-中的-lt-script-defer-gt" class="headerlink" title="&lt;head&gt;中的&lt;script defer&gt;"></a>&lt;head&gt;中的&lt;script defer&gt;</h4><p>script 标签放在&lt;head&gt;中并附上 defer 属性<br>则该 script 的下载过程与 dom 加载同时进行，并会等待 dom 加载完毕后执行<br>对于不改变第一呈现效果但又要等待 dom 加载完毕后执行的 script，此方案是首选</p>
+<h4 id="lt-head-gt-中的-lt-script-async-gt"><a href="#lt-head-gt-中的-lt-script-async-gt" class="headerlink" title="&lt;head&gt;中的&lt;script async&gt;"></a>&lt;head&gt;中的&lt;script async&gt;</h4><p>&lt;head&gt;中的 script 加上 async 属性<br>则该 script 的下载过程与 dom 加载同时进行，下载完毕后立刻执行<br>执行过程会阻塞 dom 加载<br>适用于不操作 dom 的 script（有这种脚本？）<br>用的很少</p>
+<h2 id="ES6-模块化-script"><a href="#ES6-模块化-script" class="headerlink" title="ES6 模块化 script"></a>ES6 模块化 script</h2><p>指通过 import 和 export 语句的结构化 script<br>在 head 中只有一个&lt;script type=”module”&gt;引入顶级模块（入口模块）<br>其他子模块都由该顶级模块 import 进来<br>所有模块的下载都是与 dom 加载同时进行的，并在 dom 加载完毕后执行顶级模块</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/24/understanding-frontend-and-backend-in-web-development/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/24/understanding-frontend-and-backend-in-web-development/" class="post-title-link" itemprop="url">理解Web开发中的前后端</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-24 15:59:01" itemprop="dateCreated datePublished" datetime="2020-10-24T15:59:01+08:00">2020-10-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-01 14:17:42" itemprop="dateModified" datetime="2021-07-01T14:17:42+08:00">2021-07-01</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>浏览一个 Web 页面：浏览器-&gt;服务器-&gt;数据库-&gt;服务器-&gt;浏览器<br>其中需要编程的有浏览器上的 HTML、CSS、JS 和服务器上各类语言开发<br>于是我曾这么认为：js 之类的便是前端，django 一类的便是后端<br>直到我学了 Vue……</p>
+<p>事实上<br>负责视图层的都叫前端，负责数据库操作的都叫后端</p>
+<p>前端可以是几个文件，也可以是大规模项目，甚至可以不涉及 JS<br>例如 Vue 生态系统中的 Vue CLI 便是用来开发大规模前端的<br>大前端便是在专用目录中使用大型框架开发完 HTML、CSS、JS 后，使用各种构建工具打包（多个文件整合成一个文件）为最终在浏览器上运行的文件<br>而 Django 中的模板系统也是一种前端技术<br>只要涉及 HTML、CSS、JS 的都叫前端</p>
+<p>后端是开发数据库 API 的<br>它不返回 HTML 页面，而是返回 JSON 数据，用以供 Web 前端或是桌面 APP 调用</p>
+<p>Django 是一个前后端不分离的 Web 框架。它的前端模板系统和后端数据库系统都是它的亮点，但前端毕竟是 js 的专场，在很多项目中，django 都扮演的是后端的角色。django rest framework 是比较热门的基于 django 的用来开发 RESTful API 的框架。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Charles</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/TheNightmareX" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;TheNightmareX" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:Char2s@outlook.com" title="E-Mail → mailto:Char2s@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Charles</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

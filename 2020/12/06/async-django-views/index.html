@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言原生 Django 只专注于 HTTP在 3.0 后才原生支持了异步视图且原生 runserver 命令还只能 WSGI 启动肥肠滴蛋疼p.s. 官方文档对于异步类视图的说明有误 详见下面正确食用方法 Django 2.x 时代起便存在的 Django 拓展包Channels则支持任何的 Web 协议e.g. HTTP、WebSocket且修改了 runserver 命令，使其能以 ASGI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于类的异步Django&#x2F;DRF视图的实现">
+<meta property="og:url" content="http://example.com/2020/12/06/async-django-views/index.html">
+<meta property="og:site_name" content="Just Blogs">
+<meta property="og:description" content="前言原生 Django 只专注于 HTTP在 3.0 后才原生支持了异步视图且原生 runserver 命令还只能 WSGI 启动肥肠滴蛋疼p.s. 官方文档对于异步类视图的说明有误 详见下面正确食用方法 Django 2.x 时代起便存在的 Django 拓展包Channels则支持任何的 Web 协议e.g. HTTP、WebSocket且修改了 runserver 命令，使其能以 ASGI">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-06T06:33:14.000Z">
+<meta property="article:modified_time" content="2021-07-01T06:13:44.100Z">
+<meta property="article:author" content="Charles">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Django">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="Backend">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/12/06/async-django-views/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>基于类的异步Django/DRF视图的实现 | Just Blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Just Blogs</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/06/async-django-views/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于类的异步Django/DRF视图的实现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-06 14:33:14" itemprop="dateCreated datePublished" datetime="2020-12-06T14:33:14+08:00">2020-12-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-01 14:13:44" itemprop="dateModified" datetime="2021-07-01T14:13:44+08:00">2021-07-01</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>原生 Django 只专注于 HTTP<br>在 3.0 后才<a target="_blank" rel="noopener" href="https://docs.djangoproject.com/zh-hans/3.1/topics/async/">原生支持了异步视图</a><br>且原生 runserver 命令还只能 WSGI 启动<br>肥肠滴蛋疼<br><strong>p.s. 官方文档对于异步类视图的说明有误 详见下面正确食用方法</strong></p>
+<p>Django 2.x 时代起便存在的 Django 拓展包<a target="_blank" rel="noopener" href="https://channels.readthedocs.io/">Channels</a>则支持任何的 Web 协议<br>e.g. HTTP、WebSocket<br>且修改了 runserver 命令，使其能以 ASGI 模式启动<br>这玩意妥妥的 Django 的 ASGI 开发必备品<br>（事实上 ASGI 规范就是为 Channels 设计的</p>
+<p>作为使用 Django 进行前后端分离开发的首选<br><a target="_blank" rel="noopener" href="https://www.django-rest-framework.org/">Django REST Framework</a>(DRF)<br>为使用 Django 开发 RESTful API 提供了诸多开箱即用的功能<br>但其尚未支持异步</p>
+<p>最近尝试开发聊天室，需要长轮询或者 WebSocket<br>WebSocket 从来没有涉及过，于是我选择了长轮询<br>不管选哪个，都需要转向使用 ASGI 协议，先把 Channels 装了<br>现在请求-控制是异步的了，视图还是同步的，还是不能写异步代码<br>为了将 DRF 的各种视图转换为异步视图，我选择通过研究 DRF 视图的内部实现，写一个 Mixin 类覆盖/转换关键的同步方法，所有需要转换为异步视图的视图都将此 Mixin 作为第一个继承类，即可实现最终效果</p>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>DRF 的所有视图的基类是<code>APIView</code>，<code>APIView</code>又继承 Django 原生的<code>View</code><br>所以首先要搞清楚这个原生<code>View</code>的运作方式</p>
+<h3 id="View"><a href="#View" class="headerlink" title="View"></a>View</h3><p>在<code>urlpatterns</code>中使用*基于类的视图(Class-Based Views)*时，需要使用<code>YourView.as_view()</code>的返回值作为视图</p>
+<p>和猜想一致，<code>as_view()</code>会返回一个传统的*基于函数的视图(Function-Based View)*，而这个函数视图的关键部分在最后，其返回了<code>dispatch()</code>方法的返回值，而<code>dispatch()</code>方法根据<code>request</code>的 HTTP 方法返回匹配的一个处理方法方法(e.g. <code>get()</code> <code>post()</code>)的返回值(一个<code>HttpResponse</code>对象)，剩余便是 Django 内部的事情了，我们无需关心。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># View</span></span><br><span class="line"><span class="meta">    @classonlymethod</span></span><br><span class="line"> <span class="comment"># we can use `@classmethod` instead</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">as_view</span>(<span class="params">cls, **initkwargs</span>):</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># something not important</span></span><br><span class="line">...</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">view</span>(<span class="params">request, *args, **kwargs</span>):</span></span><br><span class="line">            <span class="comment"># something not important</span></span><br><span class="line">...</span><br><span class="line">            <span class="keyword">return</span> self.dispatch(request, *args, **kwargs)</span><br><span class="line">        <span class="comment"># something not important</span></span><br><span class="line">...</span><br><span class="line">        <span class="keyword">return</span> view</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># View</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dispatch</span>(<span class="params">self, request, *args, **kwargs</span>):</span></span><br><span class="line">        <span class="keyword">if</span> request.method.lower() <span class="keyword">in</span> self.http_method_names:</span><br><span class="line">            handler = <span class="built_in">getattr</span>(self, request.method.lower(), self.http_method_not_allowed)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            handler = self.http_method_not_allowed</span><br><span class="line">        <span class="keyword">return</span> handler(request, *args, **kwargs)</span><br></pre></td></tr></table></figure>
+
+<p>Django 对于异步视图的识别使用的是<code>asyncio.iscoroutinefunction()</code><br>要想使一个类视图被识别为异步视图，就得使它的<code>as_view()</code>方法返回的函数视图是一个异步函数，于是可以这样重写<code>as_view()</code><br>p.s. 这其实已经是重写<code>as_view()</code>方法的最终版本了</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AsyncViewWrap</span>:</span></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">as_view</span>(<span class="params">cls, *args, **initkwargs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;Make Django process the view as an async view.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        view = <span class="built_in">super</span>().as_view(*args, **initkwargs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">async_view</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">            <span class="comment"># await view() -&gt; await dispatch() -&gt; await get()/post()/...</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">await</span> view(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> async_view</span><br></pre></td></tr></table></figure>
+
+<p>现在将<code>AsyncViewWrap</code>作为继承的第一个类的原生类视图可以被识别为异步视图了，并且我们也可以(截至目前，<strong>必须</strong>)把处理方法(e.g. <code>get()</code>)写成<strong>异步</strong>函数了</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyView</span>(<span class="params">AsyncViewWrap, View</span>):</span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get</span>(<span class="params">request: HttpRequest</span>):</span></span><br><span class="line">        <span class="keyword">return</span> HttpResponse()</span><br></pre></td></tr></table></figure>
+
+<h3 id="APIView"><a href="#APIView" class="headerlink" title="APIView"></a>APIView</h3><p><code>APIView</code>将<code>as_view()</code>方法再略加包装修饰，但主要部分是差不多的，都是返回一个函数视图，此函数视图返回<code>dispatch()</code>方法返回的响应，因此<code>as_view()</code>方法是不用动的</p>
+<p>但是<code>APIView</code>对于<code>dispatch()</code>方法做了一些明显改动，并不直接返回处理方法(e.g. <code>get()</code> <code>post()</code> … 下文的<em>处理方法</em>都指这些)的返回值了，而是先调用涉及 ORM 操作的<code>initial()</code>，获取响应后调用<code>finalize_response()</code>对其进行进一步加工处理</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># APIView</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dispatch</span>(<span class="params">self, request, *args, **kwargs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        `.dispatch()` is pretty much the same as Django&#x27;s regular dispatch,</span></span><br><span class="line"><span class="string">        but with extra hooks for startup, finalize, and exception handling.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.args = args</span><br><span class="line">        self.kwargs = kwargs</span><br><span class="line">        request = self.initialize_request(request, *args, **kwargs)</span><br><span class="line">        self.request = request</span><br><span class="line">        self.headers = self.default_response_headers  <span class="comment"># deprecate?</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            self.initial(request, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># Get the appropriate handler method</span></span><br><span class="line">            <span class="keyword">if</span> request.method.lower() <span class="keyword">in</span> self.http_method_names:</span><br><span class="line">                handler = <span class="built_in">getattr</span>(self, request.method.lower(),</span><br><span class="line">                                  self.http_method_not_allowed)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                handler = self.http_method_not_allowed</span><br><span class="line"></span><br><span class="line">            response = handler(request, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> exc:</span><br><span class="line">            response = self.handle_exception(exc)</span><br><span class="line"></span><br><span class="line">        self.response = self.finalize_response(request, response, *args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> self.response</span><br></pre></td></tr></table></figure>
+
+<p>由于<code>initial()</code>方法涉及 ORM 操作，如上文所述，必须同步调用，在异步函数中调用涉及 ORM 操作的函数需要先调用<code>asgiref.sync.sync_to_async()</code>对其进行包装，直接在异步函数中调用会报错（原理不明<br>又由于<code>finalize_response()</code>方法预期传入一个<code>Response</code>或<code>HttpResponse</code>对象，但我们将其转换成异步视图后，传入的值成了一个 awaitable 对象，需要<code>await</code>才能获取期望的<code>Response</code>或<code>HttpResponse</code><br>又又由于内置的一些处理方法是涉及 ORM 操作的同步处理方法，需要包装<br>又又又由于两个过程都是在<code>dispatch()</code>方法的中间调用的<br>所以<code>dispatch()</code>的重写就不那么优雅了，我们需要将其复制粘贴一份后再修改<br>p.s. 尚在寻找更优解</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AsyncViewWrap</span>:</span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">dispatch</span>(<span class="params">self, request, *args, **kwargs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;Add async support.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.args = args</span><br><span class="line">        self.kwargs = kwargs</span><br><span class="line">        request = self.initialize_request(request, *args, **kwargs)</span><br><span class="line">        self.request = request</span><br><span class="line">        self.headers = self.default_response_headers</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">await</span> sync_to_async(self.initial)(request, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> request.method.lower() <span class="keyword">in</span> self.http_method_names:</span><br><span class="line">                handler = <span class="built_in">getattr</span>(self, request.method.lower(),</span><br><span class="line">                                  self.http_method_not_allowed)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                handler = self.http_method_not_allowed</span><br><span class="line"></span><br><span class="line">            <span class="comment"># accept both async and sync handlers</span></span><br><span class="line">            <span class="comment"># built-in handlers are sync handlers</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> asyncio.iscoroutinefunction(handler):</span><br><span class="line">                handler = sync_to_async(handler)</span><br><span class="line">            response = <span class="keyword">await</span> handler(request, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> exc:</span><br><span class="line">            response = self.handle_exception(exc)</span><br><span class="line"></span><br><span class="line">        self.response = self.finalize_response(</span><br><span class="line">            request, response, *args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> self.response</span><br></pre></td></tr></table></figure>
+
+<h3 id="GenericViews-amp-Mixins-amp-Viewsets"><a href="#GenericViews-amp-Mixins-amp-Viewsets" class="headerlink" title="GenericViews &amp; Mixins &amp; Viewsets"></a>GenericViews &amp; Mixins &amp; Viewsets</h3><p>Mixins 提供一系列处理逻辑并返回 Response 对象的方法<br>GenericViews 通过在处理方法中直接返回这些方法的返回值来使用 Mixin 提供的功能<br>ViewSets 也依然是将各种方法映射到那么几个处理方法里<br>而同步处理方法都会被转换，无需操心<br>所以不用动直接拿来用就行</p>
+<h2 id="成品"><a href="#成品" class="headerlink" title="成品"></a>成品</h2><p>由于<code>dispatch()</code>的不优雅实现，只确保兼容 DRF 3.12.2，其他版本请自行实验</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AsyncViewWrap</span>:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Provides async view compatible support for DRF Views and ViewSets.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    This must be the first inherited class.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">as_view</span>(<span class="params">cls, *args, **initkwargs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;Make Django process the view as an async view.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        view = <span class="built_in">super</span>().as_view(*args, **initkwargs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">async_view</span>(<span class="params">*args, **kwargs</span>):</span></span><br><span class="line">            <span class="comment"># wait for the `dispatch` method</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">await</span> view(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> async_view</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">dispatch</span>(<span class="params">self, request, *args, **kwargs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;Add async support.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.args = args</span><br><span class="line">        self.kwargs = kwargs</span><br><span class="line">        request = self.initialize_request(request, *args, **kwargs)</span><br><span class="line">        self.request = request</span><br><span class="line">        self.headers = self.default_response_headers</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">await</span> sync_to_async(self.initial)(request, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> request.method.lower() <span class="keyword">in</span> self.http_method_names:</span><br><span class="line">                handler = <span class="built_in">getattr</span>(self, request.method.lower(),</span><br><span class="line">                                  self.http_method_not_allowed)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                handler = self.http_method_not_allowed</span><br><span class="line"></span><br><span class="line">            <span class="comment"># accept both async and sync handlers</span></span><br><span class="line">            <span class="comment"># built-in handlers are sync handlers</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> asyncio.iscoroutinefunction(handler):</span><br><span class="line">                handler = sync_to_async(handler)</span><br><span class="line">            response = <span class="keyword">await</span> handler(request, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> exc:</span><br><span class="line">            response = self.handle_exception(exc)</span><br><span class="line"></span><br><span class="line">        self.response = self.finalize_response(</span><br><span class="line">            request, response, *args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> self.response</span><br></pre></td></tr></table></figure>
+
+<p>任何类视图要转换为异步视图只需将此类作为第一项继承类即可</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/Django/" rel="tag"># Django</a>
+              <a href="/tags/Web/" rel="tag"># Web</a>
+              <a href="/tags/Backend/" rel="tag"># Backend</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/10/debug-vue-projects-without-cors/" rel="prev" title="Vue-CLI项目不跨域调试调试后端">
+      <i class="fa fa-chevron-left"></i> Vue-CLI项目不跨域调试调试后端
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/18/declaring-type-of-process-env/" rel="next" title="补充声明`process.env`的类型">
+      补充声明`process.env`的类型 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#View"><span class="nav-number">2.1.</span> <span class="nav-text">View</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#APIView"><span class="nav-number">2.2.</span> <span class="nav-text">APIView</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GenericViews-amp-Mixins-amp-Viewsets"><span class="nav-number">2.3.</span> <span class="nav-text">GenericViews &amp; Mixins &amp; Viewsets</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%90%E5%93%81"><span class="nav-number">3.</span> <span class="nav-text">成品</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Charles</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/TheNightmareX" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;TheNightmareX" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:Char2s@outlook.com" title="E-Mail → mailto:Char2s@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Charles</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
