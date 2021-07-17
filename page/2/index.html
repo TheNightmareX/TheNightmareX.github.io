@@ -150,6 +150,75 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/24/understanding-frontend-and-backend-in-web-development/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/24/understanding-frontend-and-backend-in-web-development/" class="post-title-link" itemprop="url">理解Web开发中的前后端</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-24 15:59:01" itemprop="dateCreated datePublished" datetime="2020-10-24T15:59:01+08:00">2020-10-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-01 14:17:42" itemprop="dateModified" datetime="2021-07-01T14:17:42+08:00">2021-07-01</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>浏览一个 Web 页面：浏览器-&gt;服务器-&gt;数据库-&gt;服务器-&gt;浏览器<br>其中需要编程的有浏览器上的 HTML、CSS、JS 和服务器上各类语言开发<br>于是我曾这么认为：js 之类的便是前端，django 一类的便是后端<br>直到我学了 Vue……</p>
+<p>事实上<br>负责视图层的都叫前端，负责数据库操作的都叫后端</p>
+<p>前端可以是几个文件，也可以是大规模项目，甚至可以不涉及 JS<br>例如 Vue 生态系统中的 Vue CLI 便是用来开发大规模前端的<br>大前端便是在专用目录中使用大型框架开发完 HTML、CSS、JS 后，使用各种构建工具打包（多个文件整合成一个文件）为最终在浏览器上运行的文件<br>而 Django 中的模板系统也是一种前端技术<br>只要涉及 HTML、CSS、JS 的都叫前端</p>
+<p>后端是开发数据库 API 的<br>它不返回 HTML 页面，而是返回 JSON 数据，用以供 Web 前端或是桌面 APP 调用</p>
+<p>Django 是一个前后端不分离的 Web 框架。它的前端模板系统和后端数据库系统都是它的亮点，但前端毕竟是 js 的专场，在很多项目中，django 都扮演的是后端的角色。django rest framework 是比较热门的基于 django 的用来开发 RESTful API 的框架。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/12/deploy-django-sqlite-project-to-centos7-with-btpanel/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -328,14 +397,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -350,6 +419,16 @@
   </div>
 
 
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://frank3215.github.io/" title="https:&#x2F;&#x2F;frank3215.github.io&#x2F;" rel="noopener" target="_blank">OI-Wiki</a>
+        </li>
+    </ul>
+  </div>
 
       </div>
 
