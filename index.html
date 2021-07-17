@@ -150,6 +150,117 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/17/using-the-pipe-to-validate-everything-in-nestjs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/17/using-the-pipe-to-validate-everything-in-nestjs/" class="post-title-link" itemprop="url">在NestJS中使用管道执行所有验证</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-17 23:34:46" itemprop="dateCreated datePublished" datetime="2021-07-17T23:34:46+08:00">2021-07-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-18 01:46:03" itemprop="dateModified" datetime="2021-07-18T01:46:03+08:00">2021-07-18</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><em>nest</em> 与 <em>class-validator</em> 可以完美整合，对于数据结构、类型的验证，<a target="_blank" rel="noopener" href="https://docs.nestjs.com/techniques/validation#auto-validation"><em>nest</em></a> 和 <a target="_blank" rel="noopener" href="https://github.com/typestack/class-validator#readme"><em>class-validator</em></a> 都有详细的文档，在此不再赘述。然而需要验证的不止有数据结构和字段类型，还有各式的业务需求，这是没有文档提及的。大多数的 <em>nest</em> 使用者选择直接在 <em>services</em> 中进行数据验证，但这样就导致了不优雅的高耦合的代码， <em>nest</em> 推荐使用 <em>pipes</em> 集中验证数据 <del>，但文档却并不打算告诉我们到底怎么在 <em>pipes</em> 里进行业务验证……</del></p>
+<blockquote>
+<p>事实上，由于文档的不完善，大多数 <em>nest</em> 使用者都不遵循规范，直接在 <em>services</em> 中完成鉴权、验证的所有逻辑。</p>
+</blockquote>
+<p>虽然文档没有说明该如何在 <em>pipes</em> 中执行业务验证，但作为体验过 <a target="_blank" rel="noopener" href="https://www.djangoproject.com/"><em>Django</em></a> 的极致组件化开发的男人，我必须得把这玩意儿研究出来！！ &gt;_&lt;</p>
+<h1 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h1><p>要想执行业务验证，访问数据库是必不可少的，故需要在自定义验证器注入其他提供者，那么要解决的核心问题就是：</p>
+<p><strong>如何在 <em>class-validator</em> 的自定义验证器中使用 <em>nest</em> 的依赖注入？</strong></p>
+<p><em>class-validator</em> 和 <em>nest</em> 都使用控制反转技术。默认地，<em>class-validator</em> 使用自己内部的简易控制反转容器，对于自定义验证器类的实例化也是由 <em>class-validator</em> 内部完成的，如此看来根本无从下手 <del>，或许只能暴力 monkey patch 了</del>。 然而万幸的是， <em>class-validator</em> 提供了<a target="_blank" rel="noopener" href="https://github.com/typestack/class-validator#using-service-container">一个简单的接口</a>来允许用户配置其使用外部控制反转容器，那或许将 <em>class-validator</em> 的控制反转容器换成 <em>nest</em> 的根容器 <code>app</code> 或根模块 <code>AppModule</code> 是否就能解决了呢？</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.ts</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">bootstrap</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.create(AppModule);</span><br><span class="line">  <span class="keyword">await</span> app.listen(<span class="number">3000</span>);</span><br><span class="line">  useContainer(app);</span><br><span class="line">&#125;</span><br><span class="line">bootstrap();</span><br></pre></td></tr></table></figure>
+
+<p>自定义验证器：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// assignments/validators/exists-user.validator.ts</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@ValidatorConstraint</span>(&#123; <span class="attr">async</span>: <span class="literal">true</span> &#125;)</span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">ExistsUser</span> <span class="title">implements</span> <span class="title">ValidatorConstraintInterface</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Inject</span>()</span><br><span class="line">  <span class="attr">usersService</span>: UsersService;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> <span class="function"><span class="title">validate</span>(<span class="params">userId: <span class="built_in">number</span>, validationArguments: ValidationArguments</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">await</span> <span class="built_in">this</span>.usersService.retrieve(&#123;</span><br><span class="line">        <span class="attr">conditions</span>: &#123; <span class="attr">id</span>: userId &#125;,</span><br><span class="line">      &#125;);</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">defaultMessage</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;The user does not exist&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>应用：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// assignments/dto/create-assignment.dto.ts</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">CreateAssignmentDto</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Validate</span>(ExistsUser)</span><br><span class="line">  <span class="meta">@IsInt</span>()</span><br><span class="line">  <span class="attr">targetUser</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Oops，然而这并没有解决问题，反倒是抛出了更多的错误。根据错误信息可得， <em>nest</em> 的控制反转容器被请求返回许多根本不认识的实例：<em>class-validator</em> 并不会按照 <em>nest</em> 的规范来注册它自己的提供者，而 <em>nest</em> 要求提供者必须先注册自己。如此似乎又无解了？</p>
+<p>其实是因为我们忽略了 <code>useContainer(iocContainer, options)</code> 的第二个参数，其存在的目的就是为了解决这样的问题，来看一下 <code>options</code> 的类型：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Container options.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> UseContainerOptions &#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * If set to true, then default container will be used in the case if given container haven&#x27;t returned anything.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  fallback?: <span class="built_in">boolean</span>;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * If set to true, then default container will be used in the case if given container thrown an exception.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  fallbackOnErrors?: <span class="built_in">boolean</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>鉴于 <em>nest</em> 的控制反转容器在被请求获取未注册的提供者时会抛出错误而非返回 <code>undefined</code> ，我们需要设置 <code>fallbackOnErrors</code> 为 <code>true</code> 以迫使 <em>class-validator</em> 对于自己的提供者使用自己的内置控制反转容器，而对于 <em>nest</em> 的提供者则使用 <code>app</code> 作为控制反转容器：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.ts</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">bootstrap</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.create(AppModule);</span><br><span class="line">  <span class="keyword">await</span> app.listen(<span class="number">3000</span>);</span><br><span class="line">  useContainer(app, &#123; <span class="attr">fallbackOnErrors</span>: <span class="literal">true</span> &#125;);</span><br><span class="line">&#125;</span><br><span class="line">bootstrap();</span><br></pre></td></tr></table></figure>
+
+<p><strong>成功了！</strong></p>
+<h1 id="上下文数据"><a href="#上下文数据" class="headerlink" title="上下文数据"></a>上下文数据</h1><p>但不要高兴得太早，上面的自定义验证器很简单，不需要访问 <code>user</code> 对象，然而大多数的业务验证都会需要访问这个至关重要的对象，但 <em>pipes</em> 并不提供访问 <code>ExecutionContext</code> 的接口，只有应用了该管道的<a target="_blank" rel="noopener" href="https://docs.nestjs.com/custom-decorators">控制器参数装饰器</a>的返回值是暴露的，那该怎么办？</p>
+<p>请求体是最经常要验证的，故这里以请求体为例，我们可以在请求体上附加一个额外的 <code>_context</code> 字段来保存用户等上下文数据，在自定义验证器中则可以通过 <code>validationArguments.object._context</code> 来访问。要实现这一点，需要创建一个拦截器 <code>ContextInterceptor</code>：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">ContextInterceptor</span> <span class="title">implements</span> <span class="title">NestInterceptor</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">intercept</span>(<span class="params">context: ExecutionContext, next: CallHandler</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> request = context.switchToHttp().getRequest() <span class="keyword">as</span> Request;</span><br><span class="line">    <span class="keyword">const</span> &#123; user &#125; = request;</span><br><span class="line">    request.body._context = &#123; user &#125;;</span><br><span class="line">    <span class="keyword">return</span> next.handle();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>随后全局应用这个拦截器，或在每个需要在自定义验证器中访问 <code>user</code> 的控制器上应用这个拦截器:</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.ts</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">bootstrap</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.create(AppModule);</span><br><span class="line">  app.useGlobalInterceptors(<span class="keyword">new</span> ContextInterceptor());</span><br><span class="line">  <span class="keyword">await</span> app.listen(<span class="number">3000</span>);</span><br><span class="line">  useContainer(app, &#123; <span class="attr">fallbackOnErrors</span>: <span class="literal">true</span> &#125;);</span><br><span class="line">&#125;</span><br><span class="line">bootstrap();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@UseInterceptors</span>(ContextInterceptor)</span><br><span class="line"><span class="meta">@Controller</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">TestingController</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>要在自定义验证器中访问上下文时：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ValidatorConstraint</span>(&#123; <span class="attr">async</span>: <span class="literal">true</span> &#125;)</span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">TestingValidator</span> <span class="title">implements</span> <span class="title">ValidatorConstraintInterface</span> </span>&#123;</span><br><span class="line">  <span class="keyword">async</span> <span class="function"><span class="title">validate</span>(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">    userId: <span class="built_in">number</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">    &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">      <span class="built_in">object</span>: &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">        _context: &#123; user &#125;,</span></span></span><br><span class="line"><span class="params"><span class="function">      &#125;,</span></span></span><br><span class="line"><span class="params"><span class="function">    &#125;: ValidationArguments &amp; &#123; <span class="built_in">object</span>: &#123; _context: &#123; user?: User &#125; &#125; &#125;</span></span></span><br><span class="line"><span class="params"><span class="function">  </span>)</span> &#123;</span><br><span class="line">    <span class="comment">// do something with `user`</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="延迟注入"><a href="#延迟注入" class="headerlink" title="延迟注入"></a>延迟注入</h1><p>你以为这就结束了吗？ <del>对于大部分情况，确实。</del> 如果存在循环导入的关系，例如你的服务中使用到了某个应用了自定义验证器的 DTO，而那个自定义验证器又注入了你的服务，则会发生一些 <strong>极！其！迷！惑！</strong> 的错误，譬如：你的自定义验证器的<code>validate()</code>怎么着都不被执行…… <del>我才没有花一整个下午排错</del> 对于这种情况，则需要进行延迟注入：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">type</span> &#123; TestingService &#125; <span class="keyword">from</span> <span class="string">&quot;../testing.service&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@ValidatorConstraint</span>(&#123; <span class="attr">async</span>: <span class="literal">true</span> &#125;)</span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">TestingValidator</span></span></span><br><span class="line"><span class="class">  <span class="title">implements</span> <span class="title">ValidatorConstraintInterface</span>, <span class="title">OnModuleInit</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">  <span class="meta">@Inject</span>()</span><br><span class="line">  <span class="attr">moduleRef</span>: ModuleRef;</span><br><span class="line"></span><br><span class="line">  testingService: TestingService;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> <span class="function"><span class="title">onModuleInit</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="comment">// require lazy load due to circular import</span></span><br><span class="line">    <span class="built_in">this</span>.testingService = <span class="built_in">this</span>.moduleRef.get(</span><br><span class="line">      (<span class="keyword">await</span> <span class="keyword">import</span>(<span class="string">&quot;../testing.service&quot;</span>)).TestingService</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> <span class="function"><span class="title">validate</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>延迟注入的原理是，在模块顶部仅使用 <code>import type</code> 导入类型，确保模块中没有地方访问 <code>TestingService</code> 的真实值，这样编译出的最终代码就不会在模块顶部 <code>require(&quot;../testing.service&quot;)</code>，随后在运行时的模块初始化钩子中再导入该模块获取 <code>TestingModule</code> 的真实值，并使用 <code>ModuleRef</code> 获取实例实现懒注入。</p>
+<p>至于为什么会出现自定义验证器的 <code>validate()</code> 永远都不会被执行呢？这是因为循环依赖导致模块的执行顺序被调整，在调用 <code>@Validate(TestingValidator)</code> 时 <code>TestingValidator</code> 还处于 <code>undefined</code> 的状态，相当于是调用了 <code>@Validate(undefined)</code> ，而 <em>class-validator</em> 的鳖孙作者对于这种情况居然不报错？？？？ 故导致了该自定义验证器永远都不会被执行……</p>
+<hr>
+<p>原始解决方案来自：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://dev.to/avantar/custom-validation-with-database-in-nestjs-gao">Custom validation with database in NestJS</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/nestjs/nest/issues/528">Dependency injection with class-validator #528</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/17/http-code-400-or-403/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -440,7 +551,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-17 13:55:13" itemprop="dateModified" datetime="2021-07-17T13:55:13+08:00">2021-07-17</time>
+                <time title="修改时间：2021-07-17 14:02:38" itemprop="dateModified" datetime="2021-07-17T14:02:38+08:00">2021-07-17</time>
               </span>
 
           
@@ -599,7 +710,7 @@
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;rootDir&quot;</span>: <span class="string">&quot;./&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;modulePaths&quot;</span>: [<span class="string">&quot;&lt;rootDir&gt;/&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>目前(<a href="mailto:&#x4e;&#101;&#115;&#x74;&#x4a;&#x53;&#64;&#x76;&#55;&#46;&#54;&#x2e;&#49;&#51;">&#x4e;&#101;&#115;&#x74;&#x4a;&#x53;&#64;&#x76;&#55;&#46;&#54;&#x2e;&#49;&#51;</a>) 使用生成器生成的项目中未配置这些选项</p>
+<p>目前(<a href="mailto:&#78;&#x65;&#115;&#116;&#x4a;&#x53;&#64;&#x76;&#x37;&#46;&#x36;&#46;&#x31;&#51;">&#78;&#x65;&#115;&#116;&#x4a;&#x53;&#64;&#x76;&#x37;&#46;&#x36;&#46;&#x31;&#51;</a>) 使用生成器生成的项目中未配置这些选项</p>
 </blockquote>
 
       
@@ -651,7 +762,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-17 13:55:08" itemprop="dateModified" datetime="2021-07-17T13:55:08+08:00">2021-07-17</time>
+                <time title="修改时间：2021-07-17 14:02:38" itemprop="dateModified" datetime="2021-07-17T14:02:38+08:00">2021-07-17</time>
               </span>
 
           
@@ -842,76 +953,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/25/script-labels-in-html/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Charles">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Just Blogs">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/25/script-labels-in-html/" class="post-title-link" itemprop="url">HTML中的`script`标签</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-10-25 16:41:59" itemprop="dateCreated datePublished" datetime="2020-10-25T16:41:59+08:00">2020-10-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-16 21:21:48" itemprop="dateModified" datetime="2021-07-16T21:21:48+08:00">2021-07-16</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="传统-script"><a href="#传统-script" class="headerlink" title="传统 script"></a>传统 script</h2><p>传统 script 指所有非 ES6 模块化结构的 script</p>
-<h4 id="lt-body-gt-中的-lt-script-gt"><a href="#lt-body-gt-中的-lt-script-gt" class="headerlink" title="&lt;body&gt;中的&lt;script&gt;"></a>&lt;body&gt;中的&lt;script&gt;</h4><p>阻塞 dom 加载，下载并执行完毕后继续 dom 的加载<br>这是由于这类 script 可能会用于执行渲染操作以改变向用户呈现出的第一眼效果<br>但如果该 script 的内容是其他操作<br>则会影响页面呈现速度，降低用户体验，且语义性差，不符合人类直觉<br>如果 script 不改变第一眼呈现时的效果，则不建议使用这种<br>通常只有 UI 框架的 script 会放在&lt;body&gt;的底部，因为它会改变第一眼的呈现效果</p>
-<h4 id="lt-head-gt-中的-lt-script-gt-window-onload"><a href="#lt-head-gt-中的-lt-script-gt-window-onload" class="headerlink" title="&lt;head&gt;中的&lt;script&gt;+window.onload"></a>&lt;head&gt;中的&lt;script&gt;+window.onload</h4><p>下载过程阻塞 dom 加载<br>但 window.onload 监听器中的主要代码会等待 dom 加载渲染完毕后执行<br>同样会影响页面呈现速度，语义性差，但较上一种要好些<br>不论你的 script 是做什么的，都<strong>不推荐</strong>这种做法，因为已经有替代方案</p>
-<h4 id="lt-head-gt-中的-lt-script-defer-gt"><a href="#lt-head-gt-中的-lt-script-defer-gt" class="headerlink" title="&lt;head&gt;中的&lt;script defer&gt;"></a>&lt;head&gt;中的&lt;script defer&gt;</h4><p>script 标签放在&lt;head&gt;中并附上 defer 属性<br>则该 script 的下载过程与 dom 加载同时进行，并会等待 dom 加载完毕后执行<br>对于不改变第一呈现效果但又要等待 dom 加载完毕后执行的 script，此方案是首选</p>
-<h4 id="lt-head-gt-中的-lt-script-async-gt"><a href="#lt-head-gt-中的-lt-script-async-gt" class="headerlink" title="&lt;head&gt;中的&lt;script async&gt;"></a>&lt;head&gt;中的&lt;script async&gt;</h4><p>&lt;head&gt;中的 script 加上 async 属性<br>则该 script 的下载过程与 dom 加载同时进行，下载完毕后立刻执行<br>执行过程会阻塞 dom 加载<br>适用于不操作 dom 的 script（有这种脚本？）<br>用的很少</p>
-<h2 id="ES6-模块化-script"><a href="#ES6-模块化-script" class="headerlink" title="ES6 模块化 script"></a>ES6 模块化 script</h2><p>指通过 import 和 export 语句的结构化 script<br>在 head 中只有一个&lt;script type=”module”&gt;引入顶级模块（入口模块）<br>其他子模块都由该顶级模块 import 进来<br>所有模块的下载都是与 dom 加载同时进行的，并在 dom 加载完毕后执行顶级模块</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -981,14 +1022,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

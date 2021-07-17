@@ -150,6 +150,76 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/25/script-labels-in-html/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/25/script-labels-in-html/" class="post-title-link" itemprop="url">HTML中的`script`标签</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-25 16:41:59" itemprop="dateCreated datePublished" datetime="2020-10-25T16:41:59+08:00">2020-10-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-16 21:21:48" itemprop="dateModified" datetime="2021-07-16T21:21:48+08:00">2021-07-16</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="传统-script"><a href="#传统-script" class="headerlink" title="传统 script"></a>传统 script</h2><p>传统 script 指所有非 ES6 模块化结构的 script</p>
+<h4 id="lt-body-gt-中的-lt-script-gt"><a href="#lt-body-gt-中的-lt-script-gt" class="headerlink" title="&lt;body&gt;中的&lt;script&gt;"></a>&lt;body&gt;中的&lt;script&gt;</h4><p>阻塞 dom 加载，下载并执行完毕后继续 dom 的加载<br>这是由于这类 script 可能会用于执行渲染操作以改变向用户呈现出的第一眼效果<br>但如果该 script 的内容是其他操作<br>则会影响页面呈现速度，降低用户体验，且语义性差，不符合人类直觉<br>如果 script 不改变第一眼呈现时的效果，则不建议使用这种<br>通常只有 UI 框架的 script 会放在&lt;body&gt;的底部，因为它会改变第一眼的呈现效果</p>
+<h4 id="lt-head-gt-中的-lt-script-gt-window-onload"><a href="#lt-head-gt-中的-lt-script-gt-window-onload" class="headerlink" title="&lt;head&gt;中的&lt;script&gt;+window.onload"></a>&lt;head&gt;中的&lt;script&gt;+window.onload</h4><p>下载过程阻塞 dom 加载<br>但 window.onload 监听器中的主要代码会等待 dom 加载渲染完毕后执行<br>同样会影响页面呈现速度，语义性差，但较上一种要好些<br>不论你的 script 是做什么的，都<strong>不推荐</strong>这种做法，因为已经有替代方案</p>
+<h4 id="lt-head-gt-中的-lt-script-defer-gt"><a href="#lt-head-gt-中的-lt-script-defer-gt" class="headerlink" title="&lt;head&gt;中的&lt;script defer&gt;"></a>&lt;head&gt;中的&lt;script defer&gt;</h4><p>script 标签放在&lt;head&gt;中并附上 defer 属性<br>则该 script 的下载过程与 dom 加载同时进行，并会等待 dom 加载完毕后执行<br>对于不改变第一呈现效果但又要等待 dom 加载完毕后执行的 script，此方案是首选</p>
+<h4 id="lt-head-gt-中的-lt-script-async-gt"><a href="#lt-head-gt-中的-lt-script-async-gt" class="headerlink" title="&lt;head&gt;中的&lt;script async&gt;"></a>&lt;head&gt;中的&lt;script async&gt;</h4><p>&lt;head&gt;中的 script 加上 async 属性<br>则该 script 的下载过程与 dom 加载同时进行，下载完毕后立刻执行<br>执行过程会阻塞 dom 加载<br>适用于不操作 dom 的 script（有这种脚本？）<br>用的很少</p>
+<h2 id="ES6-模块化-script"><a href="#ES6-模块化-script" class="headerlink" title="ES6 模块化 script"></a>ES6 模块化 script</h2><p>指通过 import 和 export 语句的结构化 script<br>在 head 中只有一个&lt;script type=”module”&gt;引入顶级模块（入口模块）<br>其他子模块都由该顶级模块 import 进来<br>所有模块的下载都是与 dom 加载同时进行的，并在 dom 加载完毕后执行顶级模块</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/24/understanding-frontend-and-backend-in-web-development/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -397,14 +467,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
