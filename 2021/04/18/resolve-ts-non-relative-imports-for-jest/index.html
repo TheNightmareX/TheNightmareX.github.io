@@ -17,13 +17,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"thenightmarex.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="Typesciprt 提供compilerOptions.baseUrl选项来配置导入非相对路径模块时的根路径 123456&#x2F;&#x2F; tsconfig.json&amp;#123;  &quot;compilerOptions&quot;: &amp;#123;    &quot;baseUrl&quot;: &quot;.&#x2F;&quot;  &amp;#125;&amp;#125;  Typescript 可正常编译，但 Jest">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Jest解析TS非相对路径模块导入">
-<meta property="og:url" content="http://example.com/2021/04/18/resolve-ts-non-relative-imports-for-jest/index.html">
+<meta property="og:url" content="https://thenightmarex.github.io/2021/04/18/resolve-ts-non-relative-imports-for-jest/index.html">
 <meta property="og:site_name" content="Just Blogs">
 <meta property="og:description" content="Typesciprt 提供compilerOptions.baseUrl选项来配置导入非相对路径模块时的根路径 123456&#x2F;&#x2F; tsconfig.json&amp;#123;  &quot;compilerOptions&quot;: &amp;#123;    &quot;baseUrl&quot;: &quot;.&#x2F;&quot;  &amp;#125;&amp;#125;  Typescript 可正常编译，但 Jest">
 <meta property="og:locale" content="zh_CN">
@@ -35,7 +35,7 @@
 <meta property="article:tag" content="Jest">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2021/04/18/resolve-ts-non-relative-imports-for-jest/">
+<link rel="canonical" href="https://thenightmarex.github.io/2021/04/18/resolve-ts-non-relative-imports-for-jest/">
 
 
 <script id="page-configurations">
@@ -120,14 +120,14 @@
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
   </li>
   </ul>
@@ -158,7 +158,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/18/resolve-ts-non-relative-imports-for-jest/">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/2021/04/18/resolve-ts-non-relative-imports-for-jest/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -213,7 +213,7 @@
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;rootDir&quot;</span>: <span class="string">&quot;./&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;modulePaths&quot;</span>: [<span class="string">&quot;&lt;rootDir&gt;/&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>目前(<a href="mailto:&#78;&#x65;&#115;&#116;&#x4a;&#x53;&#64;&#x76;&#x37;&#46;&#x36;&#46;&#x31;&#51;">&#78;&#x65;&#115;&#116;&#x4a;&#x53;&#64;&#x76;&#x37;&#46;&#x36;&#46;&#x31;&#51;</a>) 使用生成器生成的项目中未配置这些选项</p>
+<p>目前(<a href="mailto:&#78;&#x65;&#x73;&#116;&#x4a;&#83;&#x40;&#118;&#x37;&#46;&#x36;&#46;&#49;&#51;">&#78;&#x65;&#x73;&#116;&#x4a;&#83;&#x40;&#118;&#x37;&#46;&#x36;&#46;&#49;&#51;</a>) 使用生成器生成的项目中未配置这些选项</p>
 </blockquote>
 
     </div>

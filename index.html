@@ -17,18 +17,18 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"thenightmarex.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta property="og:type" content="website">
 <meta property="og:title" content="Just Blogs">
-<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:url" content="https://thenightmarex.github.io/index.html">
 <meta property="og:site_name" content="Just Blogs">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="Charles">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="https://thenightmarex.github.io/">
 
 
 <script id="page-configurations">
@@ -113,14 +113,14 @@
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
   </li>
   </ul>
@@ -150,7 +150,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/17/using-the-pipe-to-validate-everything-in-nestjs/">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/2021/07/17/using-the-pipe-to-validate-everything-in-nestjs/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -261,7 +261,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/17/http-code-400-or-403/">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/2021/07/17/http-code-400-or-403/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -284,10 +284,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-07-17 13:46:15 / 修改时间：13:49:08" itemprop="dateCreated datePublished" datetime="2021-07-17T13:46:15+08:00">2021-07-17</time>
+              <time title="创建时间：2021-07-17 13:46:15" itemprop="dateCreated datePublished" datetime="2021-07-17T13:46:15+08:00">2021-07-17</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-21 10:08:20" itemprop="dateModified" datetime="2021-07-21T10:08:20+08:00">2021-07-21</time>
+              </span>
 
           
 
@@ -316,15 +322,14 @@
 <li>员工发送请求尝试删除老板</li>
 <li>员工尝试给自己加工资</li>
 </ul>
-<p>通常认为返回<code>403</code>意味着这个用户<strong>以当前状态永远都无法访问这个接口（路径+方法）</strong>，如某员工只要还是员工，就永远无法<code>DELETE /people/boss/</code>或是<code>PATCH /people/myself/ &#123; &quot;salary&quot;: 999999 &#125;</code>，对于带有请求体的方法<code>POST</code>、<code>PATCH</code>、<code>PUT</code>，<strong>不论请求体什么样</strong>，该员工都会收到<code>403</code>的返回值</p>
+<p>通常认为返回<code>403</code>意味着这个用户<strong>以当前状态永远都无法访问这个接口（指路径+方法）</strong>，如某员工只要还是员工，就永远无法<code>DELETE /people/boss/</code>或是<code>PATCH /people/myself/</code>，<strong>不论请求体什么样</strong>。</p>
 <hr>
 <p>然而，对于<code>POST /applications/ &#123; &quot;chatroom&quot;: &lt;id&gt; &#125;</code>接口，如果该用户先前已经创建了一个加入该聊天室的申请，且该申请还未被处理，则应拒绝该请求，在这种情况下，应该返回<code>400</code>还是<code>403</code>呢？</p>
-<p>问了一圈儿，小白们似乎都认为应该返回<code>403</code>，因为<strong>该用户当前没有权限向该聊天室发送申请</strong>。</p>
-<p>但是，还记得上面说的吗？</p>
+<p>问了一圈儿，众说纷纭，认为应该返回<code>403</code>的是觉得<strong>该用户当前没有权限向该聊天室发送申请</strong>，但是，还记得上面说的吗？</p>
 <blockquote>
-<p>通常认为返回<code>403</code>意味着这个用户<strong>以当前状态永远都无法访问这个接口</strong>，如某员工只要还是员工，就永远无法<code>DELETE /people/boss/</code>或是<code>PATCH /people/myself/ &#123; &quot;salary&quot;: 999999 &#125;</code>，对于带有请求体的方法<code>POST</code>、<code>PATCH</code>、<code>PUT</code>，<strong>不论请求体什么样</strong>，该员工都会收到<code>403</code>的返回值</p>
+<p>通常认为返回<code>403</code>意味着这个用户<strong>以当前状态永远都无法访问这个接口（指路径+方法）</strong>，如某员工只要还是员工，就永远无法<code>DELETE /people/boss/</code>或是<code>PATCH /people/myself/</code>，<strong>不论请求体什么样</strong>。</p>
 </blockquote>
-<p>该用户无法<code>POST /applications/ &#123; &quot;chatroom&quot;: 1 &#125;</code>，但他可以<code>POST /applications/ &#123; &quot;chatroom&quot;: 2 &#125;</code>，这就违反了直觉。故可以换一种角度，请求被拒绝的原因可以是<strong>请求体中的<code>chatroom</code>字段有误</strong>，用户不应填写一个已经存在未处理请求的<code>chatroom</code>，那么自然而然应该返回<code>400</code>了。</p>
+<p>该用户无法<code>POST /applications/ &#123; &quot;chatroom&quot;: 1 &#125;</code>，但他可以<code>POST /applications/ &#123; &quot;chatroom&quot;: 2 &#125;</code>，这就违反了这条约定。故可以换一种角度，请求被拒绝的原因可以是<strong>请求体中的<code>chatroom</code>字段有误</strong>，用户不应填写一个已经存在未处理请求的<code>chatroom</code>，那么既然数据有误，自然应该返回<code>400</code>。</p>
 
       
     </div>
@@ -344,7 +349,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/16/returning-a-class-from-a-function/">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/2021/07/16/returning-a-class-from-a-function/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -449,7 +454,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/07/const-type-assertion/">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/2021/06/07/const-type-assertion/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -520,7 +525,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/07/defining-default-value-of-class-properties/">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/2021/06/07/defining-default-value-of-class-properties/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -586,7 +591,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/20/this-is-also-a-type/">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/2021/04/20/this-is-also-a-type/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -654,7 +659,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/18/resolve-ts-non-relative-imports-for-jest/">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/2021/04/18/resolve-ts-non-relative-imports-for-jest/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -710,7 +715,7 @@
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;rootDir&quot;</span>: <span class="string">&quot;./&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;modulePaths&quot;</span>: [<span class="string">&quot;&lt;rootDir&gt;/&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>目前(<a href="mailto:&#78;&#x65;&#115;&#116;&#x4a;&#x53;&#64;&#x76;&#x37;&#46;&#x36;&#46;&#x31;&#51;">&#78;&#x65;&#115;&#116;&#x4a;&#x53;&#64;&#x76;&#x37;&#46;&#x36;&#46;&#x31;&#51;</a>) 使用生成器生成的项目中未配置这些选项</p>
+<p>目前(<a href="mailto:&#78;&#x65;&#x73;&#116;&#x4a;&#83;&#x40;&#118;&#x37;&#46;&#x36;&#46;&#49;&#51;">&#78;&#x65;&#x73;&#116;&#x4a;&#83;&#x40;&#118;&#x37;&#46;&#x36;&#46;&#49;&#51;</a>) 使用生成器生成的项目中未配置这些选项</p>
 </blockquote>
 
       
@@ -731,7 +736,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/18/declaring-type-of-process-env/">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/2021/04/18/declaring-type-of-process-env/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -796,7 +801,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/06/async-django-views/">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/2020/12/06/async-django-views/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -889,7 +894,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/10/debug-vue-projects-without-cors/">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/2020/11/10/debug-vue-projects-without-cors/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
