@@ -20,30 +20,29 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"thenightmarex.github.io","root":"/blogs/","images":"/blogs/images","scheme":"Mist","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/blogs/js/config.js"></script>
-<meta name="description" content="Typesciprt 提供compilerOptions.baseUrl选项来配置导入非相对路径模块时的根路径 123456&#x2F;&#x2F; tsconfig.json&amp;#123;  &quot;compilerOptions&quot;: &amp;#123;    &quot;baseUrl&quot;: &quot;.&#x2F;&quot;  &amp;#125;&amp;#125;  Typescript 可正常编译，但 Jest">
+<meta name="description" content="构造函数中是可以显式返回一个值的。对于 JavaScript，只要求返回值是一个对象即可，否则依然返回实例；对于 TypeScript，则要求返回值的类型必须可赋给类的实例类型。 利用这一特性，可以实现很多有意思的东西。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Jest解析TS非相对路径模块导入">
-<meta property="og:url" content="https://thenightmarex.github.io/blogs/2021/04/18/resolve-ts-non-relative-imports-for-jest/index.html">
+<meta property="og:title" content="从构造函数中显式返回一个值">
+<meta property="og:url" content="https://thenightmarex.github.io/blogs/2021/07/22/returning-value-explicitly-from-a-constructor/index.html">
 <meta property="og:site_name" content="Just Blogs">
-<meta property="og:description" content="Typesciprt 提供compilerOptions.baseUrl选项来配置导入非相对路径模块时的根路径 123456&#x2F;&#x2F; tsconfig.json&amp;#123;  &quot;compilerOptions&quot;: &amp;#123;    &quot;baseUrl&quot;: &quot;.&#x2F;&quot;  &amp;#125;&amp;#125;  Typescript 可正常编译，但 Jest">
+<meta property="og:description" content="构造函数中是可以显式返回一个值的。对于 JavaScript，只要求返回值是一个对象即可，否则依然返回实例；对于 TypeScript，则要求返回值的类型必须可赋给类的实例类型。 利用这一特性，可以实现很多有意思的东西。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-04-18T09:13:42.000Z">
-<meta property="article:modified_time" content="2021-07-21T15:55:12.866Z">
+<meta property="article:published_time" content="2021-07-22T09:42:51.000Z">
+<meta property="article:modified_time" content="2021-07-22T10:01:37.770Z">
 <meta property="article:author" content="Charles">
 <meta property="article:tag" content="TypeScript">
-<meta property="article:tag" content="Testing">
-<meta property="article:tag" content="Jest">
+<meta property="article:tag" content="JavaScript">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://thenightmarex.github.io/blogs/2021/04/18/resolve-ts-non-relative-imports-for-jest/">
+<link rel="canonical" href="https://thenightmarex.github.io/blogs/2021/07/22/returning-value-explicitly-from-a-constructor/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://thenightmarex.github.io/blogs/2021/04/18/resolve-ts-non-relative-imports-for-jest/","path":"2021/04/18/resolve-ts-non-relative-imports-for-jest/","title":"Jest解析TS非相对路径模块导入"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://thenightmarex.github.io/blogs/2021/07/22/returning-value-explicitly-from-a-constructor/","path":"2021/07/22/returning-value-explicitly-from-a-constructor/","title":"从构造函数中显式返回一个值"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Jest解析TS非相对路径模块导入 | Just Blogs</title>
+<title>从构造函数中显式返回一个值 | Just Blogs</title>
   
 
 
@@ -120,7 +119,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">解决方案：</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Proxy"><span class="nav-number">1.</span> <span class="nav-text">Proxy</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%A6%E6%B5%8B%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">侦测函数调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E8%BD%BD%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.2.</span> <span class="nav-text">重载运算符</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8D%E5%90%8C%E5%AE%9E%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">不同实例</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -200,7 +199,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2021/04/18/resolve-ts-non-relative-imports-for-jest/">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2021/07/22/returning-value-explicitly-from-a-constructor/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/blogs/images/avatar.gif">
@@ -213,7 +212,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Jest解析TS非相对路径模块导入
+          从构造函数中显式返回一个值
         </h1>
 
         <div class="post-meta-container">
@@ -223,16 +222,10 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2021-04-18 17:13:42" itemprop="dateCreated datePublished" datetime="2021-04-18T17:13:42+08:00">2021-04-18</time>
+      <time title="创建时间：2021-07-22 17:42:51 / 修改时间：18:01:37" itemprop="dateCreated datePublished" datetime="2021-07-22T17:42:51+08:00">2021-07-22</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-07-21 23:55:12" itemprop="dateModified" datetime="2021-07-21T23:55:12+08:00">2021-07-21</time>
-      </span>
 
   
 </div>
@@ -244,21 +237,18 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>Typesciprt 提供<code>compilerOptions.baseUrl</code>选项来配置导入<em>非相对路径模块</em>时的根路径</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// tsconfig.json</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;baseUrl&quot;</span>: <span class="string">&quot;./&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Typescript 可正常编译，但 Jest 报错</p>
-<blockquote>
-<p>Cannot find module ‘xxx’ from ‘xxx’</p>
-</blockquote>
+        <p>构造函数中是可以显式返回一个值的。<br>对于 JavaScript，只要求返回值是一个对象即可，否则依然返回实例；<br>对于 TypeScript，则要求返回值的类型必须可赋给类的实例类型。</p>
+<p>利用这一特性，可以实现很多有意思的东西。</p>
 <span id="more"></span>
 
-<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><p>Jest 不读取 tsconfig，但提供<a href="(https://jestjs.io/docs/configuration#modulepaths-arraystring)">自己的路径选项</a>:<code>rootDir</code>和<code>modulePaths</code></p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;rootDir&quot;</span>: <span class="string">&quot;./&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;modulePaths&quot;</span>: [<span class="string">&quot;&lt;rootDir&gt;/&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Proxy"><a href="#Proxy" class="headerlink" title="Proxy"></a>Proxy</h1><p>一个常见的用法是返回一个 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/orphaned/Web/JavaScript/Reference/Global_Objects/Proxy">Proxy</a></p>
+<h2 id="侦测函数调用"><a href="#侦测函数调用" class="headerlink" title="侦测函数调用"></a>侦测函数调用</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ThisIsAClass</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Proxy</span>(<span class="built_in">this</span>, &#123;</span><br><span class="line">      <span class="attr">get</span>: <span class="function">(<span class="params">_, p, receiver</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.debug(p, receiver);</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>[p <span class="keyword">as</span> keyof <span class="built_in">this</span>];</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">method</span>(<span class="params"></span>)</span> &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<p>目前(<a href="mailto:&#78;&#x65;&#x73;&#x74;&#74;&#x53;&#64;&#x76;&#x37;&#46;&#54;&#x2e;&#49;&#x33;">&#78;&#x65;&#x73;&#x74;&#74;&#x53;&#64;&#x76;&#x37;&#46;&#54;&#x2e;&#49;&#x33;</a>) 使用生成器生成的项目中未配置这些选项</p>
-</blockquote>
+<h2 id="重载运算符"><a href="#重载运算符" class="headerlink" title="重载运算符"></a>重载运算符</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExcellentArray</span> <span class="keyword">extends</span> <span class="title">Array</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Proxy</span>(<span class="built_in">this</span>, &#123;</span><br><span class="line">      <span class="attr">has</span>: <span class="function">(<span class="params">_, value</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.debug(value, <span class="built_in">this</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.includes(value);</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.debug(<span class="string">&quot;value&quot;</span> <span class="keyword">in</span> excellentArray); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="不同实例"><a href="#不同实例" class="headerlink" title="不同实例"></a>不同实例</h1><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Serializer</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">data: unknown</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (data <span class="keyword">instanceof</span> <span class="built_in">Array</span>) <span class="keyword">return</span> <span class="keyword">new</span> ArraySerializer(data);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -269,21 +259,20 @@
     <footer class="post-footer">
           <div class="post-tags">
               <a href="/blogs/tags/TypeScript/" rel="tag"># TypeScript</a>
-              <a href="/blogs/tags/Testing/" rel="tag"># Testing</a>
-              <a href="/blogs/tags/Jest/" rel="tag"># Jest</a>
+              <a href="/blogs/tags/JavaScript/" rel="tag"># JavaScript</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/blogs/2021/04/18/declaring-type-of-process-env/" rel="prev" title="补充声明`process.env`的类型">
-                  <i class="fa fa-chevron-left"></i> 补充声明`process.env`的类型
+                <a href="/blogs/2021/07/17/using-the-pipe-to-validate-everything-in-nestjs/" rel="prev" title="在NestJS中使用管道验证一切">
+                  <i class="fa fa-chevron-left"></i> 在NestJS中使用管道验证一切
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/blogs/2021/04/20/this-is-also-a-type/" rel="next" title="`this`也是一个类型">
-                  `this`也是一个类型 <i class="fa fa-chevron-right"></i>
+                <a href="/blogs/2021/07/22/classes-that-extend-function/" rel="next" title="继承Function的类">
+                  继承Function的类 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

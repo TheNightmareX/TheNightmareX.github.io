@@ -127,7 +127,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/blogs/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -182,6 +182,163 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2020/12/06/async-django-views/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blogs/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/blogs/2020/12/06/async-django-views/" class="post-title-link" itemprop="url">基于类的异步Django/DRF视图的实现</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-06 14:33:14" itemprop="dateCreated datePublished" datetime="2020-12-06T14:33:14+08:00">2020-12-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-07-21 23:55:12" itemprop="dateModified" datetime="2021-07-21T23:55:12+08:00">2021-07-21</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>最近尝试开发聊天室，需要长轮询或者 WebSocket<br>WebSocket 从来没有涉及过，于是我选择了长轮询<br>不管选哪个，都需要转向使用 ASGI 协议，先把 Channels 装了<br>现在请求-控制是异步的了，视图还是同步的，还是不能写异步代码<br>为了将 DRF 的各种视图转换为异步视图，我选择通过研究 DRF 视图的内部实现，写一个 Mixin 类覆盖/转换关键的同步方法，所有需要转换为异步视图的视图都将此 Mixin 作为第一个继承类，即可实现最终效果</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blogs/2020/12/06/async-django-views/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2020/11/10/debug-vue-projects-without-cors/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blogs/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/blogs/2020/11/10/debug-vue-projects-without-cors/" class="post-title-link" itemprop="url">Vue-CLI项目不跨域调试调试后端</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-10 20:32:35" itemprop="dateCreated datePublished" datetime="2020-11-10T20:32:35+08:00">2020-11-10</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-07-21 23:55:12" itemprop="dateModified" datetime="2021-07-21T23:55:12+08:00">2021-07-21</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Django Development Server: <a target="_blank" rel="noopener" href="http://localhost:8000/">http://localhost:8000</a><br>Vue Development Server: <a target="_blank" rel="noopener" href="http://localhost:8080/">http://localhost:8080</a></p>
+<p>无需配置跨域，通过 vue-cli<a target="_blank" rel="noopener" href="https://cli.vuejs.org/zh/config/#devserver-proxy">配置代理</a>即可实现将发往 localhost:8000/api 的请求转发到 localhost:8080/api。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blogs/2020/11/10/debug-vue-projects-without-cors/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
