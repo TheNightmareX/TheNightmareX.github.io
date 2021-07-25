@@ -127,14 +127,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/blogs/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/blogs/tags/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -185,6 +185,82 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2021/07/25/dont-use-the-second-parameter-of-mikro-orm-filters-to-replace-access-control/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blogs/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/blogs/2021/07/25/dont-use-the-second-parameter-of-mikro-orm-filters-to-replace-access-control/" class="post-title-link" itemprop="url">不要用MikroORM中Filter的第二个参数替代鉴权</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-07-25 12:11:18 / 修改时间：12:11:56" itemprop="dateCreated datePublished" datetime="2021-07-25T12:11:18+08:00">2021-07-25</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>MikroORM 的 <a target="_blank" rel="noopener" href="https://mikro-orm.io/docs/filters/">Filter</a> 无疑是其一大特色，可以很方便地控制用户可见资源。</p>
+<p>其 <code>cond</code> 回调可以接受第二个参数 <code>type: &#39;read&#39; | &#39;update&#39; | &#39;delete&#39;</code>，聪明蛋们肯定想到可以根据 <code>type</code> 来动态控制：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Filter</span>(&#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;crud&quot;</span>,</span><br><span class="line">  <span class="attr">cond</span>: <span class="function">(<span class="params">&#123; user &#125;: &#123; user: User &#125;, <span class="keyword">type</span></span>) =&gt;</span></span><br><span class="line">    <span class="keyword">type</span> == <span class="string">&quot;read&quot;</span></span><br><span class="line">      ? &#123; <span class="attr">$or</span>: [&#123; <span class="attr">author</span>: user &#125;, &#123; <span class="attr">isPublished</span>: <span class="literal">true</span> &#125;] &#125;</span><br><span class="line">      : &#123; <span class="attr">author</span>: user &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="meta">@Entity</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">Book</span> <span class="keyword">extends</span> <span class="title">BaseEntity</span>&lt;<span class="title">Book</span>&gt; </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样看似可以很方便地实现阻止用户更新或删除不是自己的 <code>Book</code> ，但实际是存在规范问题的。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blogs/2021/07/25/dont-use-the-second-parameter-of-mikro-orm-filters-to-replace-access-control/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -864,90 +940,6 @@
 
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> Test&lt;T1, T2, T3, T4&gt; &#123;</span><br><span class="line">  returnThis(): <span class="built_in">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2021/04/18/resolve-ts-non-relative-imports-for-jest/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/blogs/images/avatar.gif">
-      <meta itemprop="name" content="Charles">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Just Blogs">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/blogs/2021/04/18/resolve-ts-non-relative-imports-for-jest/" class="post-title-link" itemprop="url">Jest解析TS非相对路径模块导入</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-04-18 17:13:42" itemprop="dateCreated datePublished" datetime="2021-04-18T17:13:42+08:00">2021-04-18</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-07-21 23:55:12" itemprop="dateModified" datetime="2021-07-21T23:55:12+08:00">2021-07-21</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Typesciprt 提供<code>compilerOptions.baseUrl</code>选项来配置导入<em>非相对路径模块</em>时的根路径</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// tsconfig.json</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;baseUrl&quot;</span>: <span class="string">&quot;./&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Typescript 可正常编译，但 Jest 报错</p>
-<blockquote>
-<p>Cannot find module ‘xxx’ from ‘xxx’</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blogs/2021/04/18/resolve-ts-non-relative-imports-for-jest/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
       
     </div>
 
