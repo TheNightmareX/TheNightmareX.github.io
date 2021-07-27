@@ -20,34 +20,28 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"thenightmarex.github.io","root":"/blogs/","images":"/blogs/images","scheme":"Mist","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/blogs/js/config.js"></script>
-<meta name="description" content="最近写了人生中第一个 MVT 架构的 Web 应用，部署过程中踩了些坑。">
+<meta name="description" content="假设我们有一个 ExtractKeys 工具类型用来提取一个对象中对应的值满足条件的所有键： 123type ExtractKeys&lt;Obj, ValueType&gt; &#x3D; &amp;#123;  [Key in keyof Obj]: Obj[Key] extends ValueType ? Key : never;&amp;#125;[keyof Obj];  如果有一个新类型要实现仅在指定键也满足条">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CentOS7宝塔面板部署Django-SQLite项目">
-<meta property="og:url" content="https://thenightmarex.github.io/blogs/2020/10/12/deploy-django-sqlite-project-to-centos7-with-btpanel/index.html">
+<meta property="og:title" content="在复杂类型计算中保存中间状态">
+<meta property="og:url" content="https://thenightmarex.github.io/blogs/2021/07/27/saving-intermediate-types-in-complex-type-calculations/index.html">
 <meta property="og:site_name" content="Just Blogs">
-<meta property="og:description" content="最近写了人生中第一个 MVT 架构的 Web 应用，部署过程中踩了些坑。">
+<meta property="og:description" content="假设我们有一个 ExtractKeys 工具类型用来提取一个对象中对应的值满足条件的所有键： 123type ExtractKeys&lt;Obj, ValueType&gt; &#x3D; &amp;#123;  [Key in keyof Obj]: Obj[Key] extends ValueType ? Key : never;&amp;#125;[keyof Obj];  如果有一个新类型要实现仅在指定键也满足条">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://thenightmarex.github.io/blogs/2020/10/12/deploy-django-sqlite-project-to-centos7-with-btpanel/new-django-project.jpg">
-<meta property="og:image" content="https://thenightmarex.github.io/blogs/2020/10/12/deploy-django-sqlite-project-to-centos7-with-btpanel/patch-django-sqlite.jpg">
-<meta property="article:published_time" content="2020-10-11T17:30:20.000Z">
-<meta property="article:modified_time" content="2021-07-21T15:55:12.862Z">
+<meta property="article:published_time" content="2021-07-27T07:02:39.000Z">
+<meta property="article:modified_time" content="2021-07-27T07:05:43.623Z">
 <meta property="article:author" content="Charles">
-<meta property="article:tag" content="Web">
-<meta property="article:tag" content="Python">
-<meta property="article:tag" content="Django">
-<meta property="article:tag" content="Deployment">
+<meta property="article:tag" content="TypeScript">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://thenightmarex.github.io/blogs/2020/10/12/deploy-django-sqlite-project-to-centos7-with-btpanel/new-django-project.jpg">
 
 
-<link rel="canonical" href="https://thenightmarex.github.io/blogs/2020/10/12/deploy-django-sqlite-project-to-centos7-with-btpanel/">
+<link rel="canonical" href="https://thenightmarex.github.io/blogs/2021/07/27/saving-intermediate-types-in-complex-type-calculations/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://thenightmarex.github.io/blogs/2020/10/12/deploy-django-sqlite-project-to-centos7-with-btpanel/","path":"2020/10/12/deploy-django-sqlite-project-to-centos7-with-btpanel/","title":"CentOS7宝塔面板部署Django-SQLite项目"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://thenightmarex.github.io/blogs/2021/07/27/saving-intermediate-types-in-complex-type-calculations/","path":"2021/07/27/saving-intermediate-types-in-complex-type-calculations/","title":"在复杂类型计算中保存中间状态"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>CentOS7宝塔面板部署Django-SQLite项目 | Just Blogs</title>
+<title>在复杂类型计算中保存中间状态 | Just Blogs</title>
   
 
 
@@ -124,7 +118,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E9%83%A8%E7%BD%B2"><span class="nav-number">1.</span> <span class="nav-text">服务端应用程序部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2"><span class="nav-number">2.</span> <span class="nav-text">服务器部署</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%91%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">发现</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -207,7 +201,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2020/10/12/deploy-django-sqlite-project-to-centos7-with-btpanel/">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2021/07/27/saving-intermediate-types-in-complex-type-calculations/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/blogs/images/avatar.gif">
@@ -220,7 +214,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          CentOS7宝塔面板部署Django-SQLite项目
+          在复杂类型计算中保存中间状态
         </h1>
 
         <div class="post-meta-container">
@@ -230,16 +224,10 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2020-10-12 01:30:20" itemprop="dateCreated datePublished" datetime="2020-10-12T01:30:20+08:00">2020-10-12</time>
+      <time title="创建时间：2021-07-27 15:02:39 / 修改时间：15:05:43" itemprop="dateCreated datePublished" datetime="2021-07-27T15:02:39+08:00">2021-07-27</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-07-21 23:55:12" itemprop="dateModified" datetime="2021-07-21T23:55:12+08:00">2021-07-21</time>
-      </span>
 
   
 </div>
@@ -251,58 +239,25 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>最近写了人生中第一个 MVT 架构的 Web 应用，部署过程中踩了些坑。</p>
+        <p>假设我们有一个 <code>ExtractKeys</code> 工具类型用来<strong>提取一个对象中对应的值满足条件的所有键</strong>：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> ExtractKeys&lt;Obj, ValueType&gt; = &#123;</span><br><span class="line">  [Key <span class="keyword">in</span> keyof Obj]: Obj[Key] <span class="keyword">extends</span> ValueType ? Key : <span class="built_in">never</span>;</span><br><span class="line">&#125;[keyof Obj];</span><br></pre></td></tr></table></figure>
+
+<p>如果有一个新类型要实现<strong>仅在指定键也满足条件时</strong>提取一个对象中对应的值满足条件的所有键呢？</p>
+<p>似乎需要<strong>以同样的参数重复调用</strong>两次 <code>ExtractKeys</code>：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> ExtractKeysIfIncludes&lt;</span><br><span class="line">  Key <span class="keyword">extends</span> <span class="built_in">string</span>,</span><br><span class="line">  Obj,</span><br><span class="line">  ValueType</span><br><span class="line">&gt; = Key <span class="keyword">extends</span> ExtractKeys&lt;Obj, ValueType&gt;</span><br><span class="line">  ? ExtractKeys&lt;Obj, ValueType&gt;</span><br><span class="line">  : <span class="built_in">never</span>;</span><br></pre></td></tr></table></figure>
+
+<p>那如果有极端复杂的类型，难道需要<strong>以同样的参数重复调用同一个类型</strong>几次十几次几十次？这是难以接受的<del>（虽然我以前就这么干）</del>，那有没有更优美的实现呢？</p>
 <span id="more"></span>
 
-<h2 id="服务端应用程序部署"><a href="#服务端应用程序部署" class="headerlink" title="服务端应用程序部署"></a>服务端应用程序部署</h2><ul>
-<li>升级 SQLite3<br>Django3.1 需要 3.8.3 以上版本的 SQLite<br>系统自带的 SQLite3 则是 3.7<br>不升级无法启动项目<br>从<a target="_blank" rel="noopener" href="https://sqlite.org/">SQLite 官网</a>下载最新的 SQLite3 源码包并解包<br>编译安装，设置 prefix 以覆盖系统自带的 SQLite3<br>若不设置 prefix，则默认安装到_/_usr/local<br>而动态链接库搜索路径中，/usr 先于/usr/local<br>因此 Python 依旧会调用旧的 SQLite3<br>除非将旧的删干净或者手动设置动态链接库搜索路径（不推荐）</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./configure --prefix=/usr</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<p>在<a target="_blank" rel="noopener" href="https://www.typescriptlang.org/docs/handbook/2/conditional-types.html">条件类型</a>语句中，<code>infer</code> 是可以赤裸裸直接跟在 <code>extends</code> 后面的，所得的类型就是原先类型，可以理解为就是<strong>将结果存进了一个变量</strong>，于是原实现就可以改进为：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> ExtractKeysIfIncludes&lt;Key <span class="keyword">extends</span> <span class="built_in">string</span>, Obj, ValueType&gt; = ExtractKeys&lt;</span><br><span class="line">  Obj,</span><br><span class="line">  ValueType</span><br><span class="line">&gt; <span class="keyword">extends</span> infer Keys</span><br><span class="line">  ? Key <span class="keyword">extends</span> Keys</span><br><span class="line">    ? Keys</span><br><span class="line">    : <span class="built_in">never</span></span><br><span class="line">  : <span class="built_in">never</span>;</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>软件商店：安装<strong>Python 项目管理器</strong>1.9</li>
-<li>在 <strong>Python 项目管理器</strong> - <strong>版本管理</strong>中安装 Python<br>安装<strong>Python 项目管理器</strong>时会自动安装 pyenv 以管理 Python 版本<br>若安装 Python 失败，请尝试使用 pyenv 自行本地安装</li>
-<li>在<strong>Python 项目管理器</strong>中添加项目<br>以下是添加项目时一些容易引起歧义的设置项：<ul>
-<li>路径：Django 项目根目录（manage.py 所在目录）</li>
-<li>端口：随便选一个服务器未被占用的端口号（不是最终端口号）</li>
-<li>安装模块依赖：会自动创建虚拟环境“项目名称_venv”并安装 requirements.txt 中的第三方库</li>
-</ul>
-</li>
-</ul>
-<img src="/blogs/2020/10/12/deploy-django-sqlite-project-to-centos7-with-btpanel/new-django-project.jpg" class="" title="新建Django项目">
-
-<ul>
-<li>Monkey Patch on Django<br>可能是 Django3.1 的 bug?<br>如果项目适用 sqlite<br>则在操作数据库时依旧会抛出异常：需要 3.8.3 以上的 SQLite<br>只能停止项目，Monkey Patch 一下 Django 的代码临时修复一下<br>xxx_venv/lib/python3.x/site-packages/django/db/backends/sqlite3/base.py<ul>
-<li>复制 214 行到 215 行，并减少一层缩进</li>
-<li>注释掉 208-214 行</li>
-</ul>
-</li>
-</ul>
-<img src="/blogs/2020/10/12/deploy-django-sqlite-project-to-centos7-with-btpanel/patch-django-sqlite.jpg" class="" title="补丁Django的Sqlite驱动">
-
-<ul>
-<li>进入项目目录<a target="_blank" rel="noopener" href="https://docs.djangoproject.com/zh-hans/3.1/howto/deployment/checklist/#deployment-checklist">部署 Django 项目</a></li>
-</ul>
-<hr>
-<p>后端完成部署，接下来是把项目映射到 Nginx</p>
-<hr>
-<h2 id="服务器部署"><a href="#服务器部署" class="headerlink" title="服务器部署"></a>服务器部署</h2><ul>
-<li>在<strong>Python 项目管理器</strong>中，<strong>映射</strong>你的项目<ul>
-<li>单击<strong>映射</strong></li>
-<li>输入要绑定的域名<br>这个域名不能带有端口号，要指定端口号，请在<strong>网站</strong>中为该网站随意增加一个绑定域名，删除原先的错误端口域名，新增正确端口域名，删除随意增加的那个域名<br>该域名将用来<ul>
-<li>作为 Nginx 网站名</li>
-<li>在/www/wwwroot/中以该域名作为目录名创建网站根目录</li>
-<li>设置该 Nginx 映射网站的绑定域名为该域名的 80 端口<br>当服务器 80 端口收到请求<br>服务器会判断请求的域名绑定到了哪个网站上<br>随后将数据包转发给那个网站</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>在 Nginx 配置文件中配置静态文件路径<br>Django 项目为服务端应用程序，在生产环境中，分发静态文件应当直接由服务器完成，不应交由 Django 完成</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">server</span><br><span class="line">&#123;</span><br><span class="line">    location /static/ &#123;</span><br><span class="line">        alias Django项目根目录/静态文件目录/;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>部署完成，访问绑定的域名查看</p>
+<h1 id="发现"><a href="#发现" class="headerlink" title="发现"></a>发现</h1><p>前阵子突然看到 <a target="_blank" rel="noopener" href="https://github.com/mikro-orm/mikro-orm/">MikroORM</a> v5 的新特性计划中有这么一条：</p>
+<blockquote>
+<p>Strict typings for populate array (dot notation and string literal types)</p>
+</blockquote>
+<p>卧槽！这不是我花了几天时间在 <a target="_blank" rel="noopener" href="https://github.com/TheNightmareX/nest-mikro-crud">nest-mikro-crud</a> 中实现了一大半的特性吗？！于是急匆匆地创建了一条 issue，希望能采用我的实现 <del>，走上人生巅峰</del> 。作者将其转换为 discussion，然后<a target="_blank" rel="noopener" href="https://github.com/mikro-orm/mikro-orm/discussions/2054#discussioncomment-1026232">回复道</a>，这个新特性已经实现了，而且实现地比我好得多，我可以去看看他的实现……:]</p>
+<p>在他的实现中我发现了这样的写法：<code>extends infer T</code>，但当时并不理解有什么意义，只是觉得“哇原来 <code>infer</code> 是可以赤裸裸地直接跟在 <code>extends</code> 后面的”，直到昨天实在忍不下去开始为<strong>用 <em>AnyScript</em> 写的</strong> <a target="_blank" rel="noopener" href="https://vuex.vuejs.org/zh/">Vuex</a> 声明完整类型的过程中才理解了其意义。</p>
 
     </div>
 
@@ -312,21 +267,18 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/blogs/tags/Web/" rel="tag"># Web</a>
-              <a href="/blogs/tags/Python/" rel="tag"># Python</a>
-              <a href="/blogs/tags/Django/" rel="tag"># Django</a>
-              <a href="/blogs/tags/Deployment/" rel="tag"># Deployment</a>
+              <a href="/blogs/tags/TypeScript/" rel="tag"># TypeScript</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
+                <a href="/blogs/2021/07/26/better-way-to-declare-the-type-of-vuex-store/" rel="prev" title="声明Vuex中store类型的更好方法">
+                  <i class="fa fa-chevron-left"></i> 声明Vuex中store类型的更好方法
+                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/blogs/2020/10/24/understanding-frontend-and-backend-in-web-development/" rel="next" title="理解Web开发中的前后端">
-                  理解Web开发中的前后端 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
