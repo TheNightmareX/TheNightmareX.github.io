@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blogs/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blogs/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blogs/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blogs/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blogs/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"thenightmarex.github.io","root":"/blogs/","images":"/blogs/images","scheme":"Mist","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/blogs/js/config.js"></script>
+<meta name="description" content="记得上一次写 Vue 还是在刚刚接触 TypeScript 的时候，这一整个高一下学期我都在为课题研究的 Web 项目不停地造轮子，由于强迫症的作用，我总爱把类型写得面面俱到，能写成字面量类型的字符串绝不用 string 类型一带而过，于是不经意间对 TypeScript 的理解便提升了不止一个档次。 前两天我终于初步完成了后端。来到久违的前端，突然想起了 Vuex 恐怖的 TypeScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="史上最完美的 Vuex 4 类型声明">
+<meta property="og:url" content="https://thenightmarex.github.io/blogs/2021/07/27/super-awesome-vuex-type-declaration/index.html">
+<meta property="og:site_name" content="Just Blogs">
+<meta property="og:description" content="记得上一次写 Vue 还是在刚刚接触 TypeScript 的时候，这一整个高一下学期我都在为课题研究的 Web 项目不停地造轮子，由于强迫症的作用，我总爱把类型写得面面俱到，能写成字面量类型的字符串绝不用 string 类型一带而过，于是不经意间对 TypeScript 的理解便提升了不止一个档次。 前两天我终于初步完成了后端。来到久违的前端，突然想起了 Vuex 恐怖的 TypeScript">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-27T11:38:39.000Z">
+<meta property="article:modified_time" content="2021-07-27T11:38:39.468Z">
+<meta property="article:author" content="Charles">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="Frontend">
+<meta property="article:tag" content="TypeScript">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://thenightmarex.github.io/blogs/2021/07/27/super-awesome-vuex-type-declaration/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://thenightmarex.github.io/blogs/2021/07/27/super-awesome-vuex-type-declaration/","path":"2021/07/27/super-awesome-vuex-type-declaration/","title":"史上最完美的 Vuex 4 类型声明"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>史上最完美的 Vuex 4 类型声明 | Just Blogs</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/blogs/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/blogs/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Just Blogs</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/blogs/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/blogs/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/blogs/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%B9%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text">特性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%99%90%E5%88%B6"><span class="nav-number">3.</span> <span class="nav-text">限制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BC%94%E7%A4%BA"><span class="nav-number">5.</span> <span class="nav-text">演示</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Charles</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blogs/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/blogs/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/TheNightmareX" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;TheNightmareX" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:Char2s@outlook.com" title="E-Mail → mailto:Char2s@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://frank3215.github.io/" title="https:&#x2F;&#x2F;frank3215.github.io&#x2F;" rel="noopener" target="_blank">OI-Wiki</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://poppython.com/" title="https:&#x2F;&#x2F;poppython.com&#x2F;" rel="noopener" target="_blank">远子&Vina</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2021/07/27/super-awesome-vuex-type-declaration/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blogs/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          史上最完美的 Vuex 4 类型声明
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-27 19:38:39" itemprop="dateCreated datePublished" datetime="2021-07-27T19:38:39+08:00">2021-07-27</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>记得上一次写 Vue 还是在刚刚接触 TypeScript 的时候，这一整个高一下学期我都在为课题研究的 Web 项目不停地造轮子，由于强迫症的作用，我总爱把类型写得面面俱到，能写成字面量类型的字符串绝不用 <code>string</code> 类型一带而过，于是不经意间对 TypeScript 的理解便提升了不止一个档次。</p>
+<p>前两天我终于初步完成了后端。来到久违的前端，突然想起了 Vuex 恐怖的 <del>TypeScript</del> <strong><em>AnyScript</em></strong> 支持，我是不可能和这一大坨 <code>any</code> 同流合污的&gt;_&lt;！！这么想的人不止我一个，但费劲功夫也只找到寥寥几个解决方案：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1695584">TypeScript 4.1 新特性：字符串模板类型，Vuex 终于有救了？</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.hikerpig.cn/2019-06-17-typescript-powered-vuex/">使用 Typescript 加强 Vuex 使用体验</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/danielroe/typed-vuex">danielroe/typed-vuex: 🏦 A typed store accessor for vanilla Vuex.</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mrcrowl/vuex-typex">mrcrowl/vuex-typex: Typescript builder for strongly-typed access to Vuex Store modules</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ktsn/vuex-smart-module">ktsn/vuex-smart-module: Type safe Vuex module with powerful module features</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ktsn/vuex-type-helper">ktsn/vuex-type-helper: Type level helper to ensure type safety in Vuex</a></li>
+</ul>
+<p>它们大多是通过提供额外的 API 来绕过 Vuex 内置的 <strong><em>AnyScript</em></strong> 类型声明，并要求定义一大堆多余的 interface 并在每次调用时作为泛型参数传入，使用起来麻烦，还使代码混乱难读，我都不满意。</p>
+<p>那怎么办？自己动手，丰衣足食，既然 Vuex 的类型不够详细，那就用 <code>declare module</code> 补充声明不就可以了吗？ <del>咱也搞不懂这么简单的一个补充声明就能解决的问题为什么那么多人在用如此曲折的方法解决</del></p>
+<span id="more"></span>
+
+<h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><ul>
+<li>TypeScript - 4.3.5</li>
+<li>Vuex - 4.0.2</li>
+</ul>
+<h1 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h1><ul>
+<li><code>store.state</code> 中包括自身与所有嵌套的子模块中的 <code>state</code>，如 <code>store.state.module1.module2.value</code></li>
+<li><code>store.getters</code> 中包括自身与所有嵌套子模块中的 <code>getters</code>，如 <code>store.getters[&#39;module1/module2computedValue&#39;]</code>；且类型为对应的 <code>getter</code> 的返回值类型</li>
+<li><code>store.commit</code> 的第一个参数 <code>type</code> 会根据自身与所有嵌套子模块中的 <code>mutations</code> 进行自动补全，如 <code>store.commit(&quot;module1/module2/increment&quot;, ...)</code> ；第二个参数 <code>payload</code> 的类型与 <code>type</code> 所指向的 <code>mutation</code> 的第二个参数的类型相同</li>
+<li><code>store.dispatch</code> 基本同上，除了 <code>store.commit</code> 的返回值总是 <code>void</code>，而 <code>store.dispatch</code> 的返回值类型会与 <code>type</code> 所指向的 <code>action</code> 的返回值类型相同</li>
+</ul>
+<h1 id="限制"><a href="#限制" class="headerlink" title="限制"></a>限制</h1><p>只支持通过原始 <code>store</code> 对象执行操作（不支持任何 helper）。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>看不懂？没关系，只管用就好了，看不懂我也不会解释给你听的 ^_^</p>
+<p><del>代码高亮似乎懵逼了，建议复制到编辑器</del></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createStore &#125; <span class="keyword">from</span> <span class="string">&quot;vuex&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">declare</span> <span class="built_in">module</span> <span class="string">&quot;vuex&quot;</span> &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">createStore</span>&lt;<span class="title">Options</span> <span class="title">extends</span> <span class="title">StoreOptions</span>&lt;<span class="title">unknown</span>&gt;&gt;(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">    options: Options</span></span></span><br><span class="line"><span class="params"><span class="function">  </span>): <span class="title">EnhancedStore</span>&lt;</span></span><br><span class="line"><span class="function">    <span class="title">Options</span> <span class="title">extends</span> <span class="title">StoreOptions</span>&lt;<span class="title">infer</span> <span class="title">State</span>&gt; ? <span class="title">State</span> : <span class="title">never</span>,</span></span><br><span class="line"><span class="function">    <span class="title">NonNullable</span>&lt;<span class="title">Options</span>[&quot;<span class="title">getters</span>&quot;]&gt;,</span></span><br><span class="line"><span class="function">    <span class="title">NonNullable</span>&lt;<span class="title">Options</span>[&quot;<span class="title">mutations</span>&quot;]&gt;,</span></span><br><span class="line"><span class="function">    <span class="title">NonNullable</span>&lt;<span class="title">Options</span>[&quot;<span class="title">actions</span>&quot;]&gt;,</span></span><br><span class="line"><span class="function">    <span class="title">NonNullable</span>&lt;<span class="title">Options</span>[&quot;<span class="title">modules</span>&quot;]&gt;</span></span><br><span class="line"><span class="function">  &gt;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">interface</span> EnhancedStore&lt;</span><br><span class="line">    State,</span><br><span class="line">    Getters <span class="keyword">extends</span> GetterTree&lt;State, State&gt;,</span><br><span class="line">    Mutations <span class="keyword">extends</span> MutationTree&lt;State&gt;,</span><br><span class="line">    Actions <span class="keyword">extends</span> ActionTree&lt;State, State&gt;,</span><br><span class="line">    Modules <span class="keyword">extends</span> ModuleTree&lt;State&gt;</span><br><span class="line">  &gt; <span class="keyword">extends</span> Store&lt;unknown&gt; &#123;</span><br><span class="line">    <span class="keyword">readonly</span> state: NestedState&lt;State, State, Modules&gt;;</span><br><span class="line">    <span class="keyword">readonly</span> getters: NamespacedGetterReturnTypes&lt;</span><br><span class="line">      State,</span><br><span class="line">      State,</span><br><span class="line">      Getters,</span><br><span class="line">      Modules</span><br><span class="line">    &gt;;</span><br><span class="line"></span><br><span class="line">    commit: EnhancedCommit&lt;State, Mutations, Modules&gt;;</span><br><span class="line">    dispatch: EnhancedDispatch&lt;State, State, Actions, Modules&gt;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">type</span> NestedState&lt;</span><br><span class="line">    State,</span><br><span class="line">    RootState,</span><br><span class="line">    Modules <span class="keyword">extends</span> ModuleTree&lt;RootState&gt;</span><br><span class="line">  &gt; = State &amp;</span><br><span class="line">    &#123;</span><br><span class="line">      [Name <span class="keyword">in</span> keyof Modules]: Modules[Name][<span class="string">&quot;state&quot;</span>] &amp;</span><br><span class="line">        (Modules[Name][<span class="string">&quot;modules&quot;</span>] <span class="keyword">extends</span> ModuleTree&lt;RootState&gt;</span><br><span class="line">          ? NestedState&lt;</span><br><span class="line">              Modules[Name][<span class="string">&quot;state&quot;</span>],</span><br><span class="line">              RootState,</span><br><span class="line">              Modules[Name][<span class="string">&quot;modules&quot;</span>]</span><br><span class="line">            &gt;</span><br><span class="line">          : &#123;&#125;);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">type</span> NamespacedGetterReturnTypes&lt;</span><br><span class="line">    State,</span><br><span class="line">    RootState,</span><br><span class="line">    Getters <span class="keyword">extends</span> GetterTree&lt;State, RootState&gt;,</span><br><span class="line">    Modules <span class="keyword">extends</span> ModuleTree&lt;RootState&gt;</span><br><span class="line">  &gt; = &#123;</span><br><span class="line">    [Name <span class="keyword">in</span> keyof Getters]: ReturnType&lt;Getters[Name]&gt;;</span><br><span class="line">  &#125; &amp;</span><br><span class="line">    &#123;</span><br><span class="line">      [Path <span class="keyword">in</span> ExtractNamespacedPaths&lt;</span><br><span class="line">        RootState,</span><br><span class="line">        Modules,</span><br><span class="line">        <span class="string">&quot;getters&quot;</span></span><br><span class="line">      &gt;]: ResolveNamespacedPath&lt;</span><br><span class="line">        Path,</span><br><span class="line">        <span class="string">&quot;getters&quot;</span>,</span><br><span class="line">        RootState,</span><br><span class="line">        Modules</span><br><span class="line">      &gt; <span class="keyword">extends</span> infer Getter</span><br><span class="line">        ? Getter <span class="keyword">extends</span> () =&gt; infer ReturnType</span><br><span class="line">          ? ReturnType</span><br><span class="line">          : <span class="built_in">never</span></span><br><span class="line">        : <span class="built_in">never</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">interface</span> EnhancedCommit&lt;</span><br><span class="line">    RootState,</span><br><span class="line">    Mutations <span class="keyword">extends</span> MutationTree&lt;RootState&gt;,</span><br><span class="line">    Modules <span class="keyword">extends</span> ModuleTree&lt;RootState&gt;</span><br><span class="line">  &gt; &#123;</span><br><span class="line">    &lt;Type <span class="keyword">extends</span> keyof Mutations&gt;(</span><br><span class="line">      <span class="keyword">type</span>: Type,</span><br><span class="line">      payload?: Parameters&lt;Mutations[Type]&gt;[<span class="number">1</span>],</span><br><span class="line">      options?: CommitOptions</span><br><span class="line">    ): <span class="built_in">void</span>;</span><br><span class="line"></span><br><span class="line">    &lt;Path extends ExtractNamespacedPaths&lt;RootState, Modules, &quot;mutations&quot;&gt;&gt;(</span><br><span class="line">      type: Path,</span><br><span class="line">      payload?: ResolveNamespacedPath&lt;</span><br><span class="line">        Path,</span><br><span class="line">        &quot;mutations&quot;,</span><br><span class="line">        RootState,</span><br><span class="line">        Modules</span><br><span class="line">      &gt; extends infer Mutation</span><br><span class="line">        ? Mutation extends (...args: [infer State, infer Payload]) =&gt; void</span><br><span class="line">          ? Payload</span><br><span class="line">          : never</span><br><span class="line">        : never,</span><br><span class="line">      options?: CommitOptions</span><br><span class="line">    ): void;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  interface EnhancedDispatch&lt;</span><br><span class="line">    State,</span><br><span class="line">    RootState,</span><br><span class="line">    Actions extends ActionTree&lt;State, RootState&gt;,</span><br><span class="line">    Modules extends ModuleTree&lt;RootState&gt;</span><br><span class="line">  &gt; &#123;</span><br><span class="line">    &lt;Type extends keyof Actions&gt;(</span><br><span class="line">      type: Type,</span><br><span class="line">      payload?: Parameters&lt;</span><br><span class="line">        ExtractActionHandler&lt;State, RootState, Actions[Type]&gt;</span><br><span class="line">      &gt;[1]</span><br><span class="line">    ): ReturnType&lt;ExtractActionHandler&lt;State, RootState, Actions[Type]&gt;&gt;;</span><br><span class="line"></span><br><span class="line">    &lt;Path extends ExtractNamespacedPaths&lt;RootState, Modules, &quot;actions&quot;&gt;&gt;(</span><br><span class="line">      type: Path,</span><br><span class="line">      payload?: ResolveNamespacedPath&lt;</span><br><span class="line">        Path,</span><br><span class="line">        &quot;actions&quot;,</span><br><span class="line">        RootState,</span><br><span class="line">        Modules</span><br><span class="line">      &gt; extends infer Action_</span><br><span class="line">        ? Action_ extends Action&lt;State, RootState&gt;</span><br><span class="line">          ? Parameters&lt;ExtractActionHandler&lt;State, RootState, Action_&gt;&gt;[1]</span><br><span class="line">          : &quot;1&quot;</span><br><span class="line">        : &quot;2&quot;</span><br><span class="line">    ): any;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  type ExtractActionHandler&lt;</span><br><span class="line">    State,</span><br><span class="line">    RootState,</span><br><span class="line">    Action_ extends Action&lt;State, RootState&gt;</span><br><span class="line">  &gt; = Action_ extends ActionObject&lt;State, RootState&gt;</span><br><span class="line">    ? Action_[&quot;handler&quot;]</span><br><span class="line">    : Action_;</span><br><span class="line"></span><br><span class="line">  type ExtractNamespacedPaths&lt;</span><br><span class="line">    RootState,</span><br><span class="line">    Modules extends ModuleTree&lt;RootState&gt;,</span><br><span class="line">    KeysFrom extends keyof Module&lt;unknown, unknown&gt;</span><br><span class="line">  &gt; = &#123;</span><br><span class="line">    [Name in string &amp; keyof Modules]:</span><br><span class="line">      | `$&#123;Name&#125;/$&#123;string &amp; keyof Modules[Name][KeysFrom]&#125;`</span><br><span class="line">      | `$&#123;Name&#125;/$&#123;Modules[Name][&quot;modules&quot;] extends ModuleTree&lt;RootState&gt;</span><br><span class="line">          ? ExtractNamespacedPaths&lt;</span><br><span class="line">              RootState,</span><br><span class="line">              Modules[Name][&quot;modules&quot;],</span><br><span class="line">              KeysFrom</span><br><span class="line">            &gt;</span><br><span class="line">          : never&#125;`;</span><br><span class="line">  &#125; extends infer T</span><br><span class="line">    ? T[keyof T]</span><br><span class="line">    : never;</span><br><span class="line"></span><br><span class="line">  type ResolveNamespacedPath&lt;</span><br><span class="line">    Path extends string,</span><br><span class="line">    KeysFrom extends keyof Module&lt;unknown, unknown&gt;,</span><br><span class="line">    RootState,</span><br><span class="line">    Modules extends ModuleTree&lt;RootState&gt;</span><br><span class="line">  &gt; = Path extends `$&#123;infer ModuleName&#125;/$&#123;infer RestPathOrKey&#125;`</span><br><span class="line">    ? RestPathOrKey extends keyof Modules[ModuleName][KeysFrom]</span><br><span class="line">      ? Modules[ModuleName][KeysFrom][RestPathOrKey]</span><br><span class="line">      : ResolveNamespacedPath&lt;</span><br><span class="line">          RestPathOrKey,</span><br><span class="line">          KeysFrom,</span><br><span class="line">          RootState,</span><br><span class="line">          NonNullable&lt;Modules[ModuleName][&quot;modules&quot;]&gt;</span><br><span class="line">        &gt;</span><br><span class="line">    : never;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Test Case</span><br><span class="line">const store = createStore(&#123;</span><br><span class="line">  state: &#123; state1: 1 &#125;,</span><br><span class="line">  getters: &#123; getter1: () =&gt; 1 &#125;,</span><br><span class="line">  mutations: &#123; mutation1: (state, payload: &#123; a: string &#125;) =&gt; &#123;&#125; &#125;,</span><br><span class="line">  actions: &#123; action1: (context, payload: &#123; a: string &#125;) =&gt; 1 &#125;,</span><br><span class="line">  modules: &#123;</span><br><span class="line">    module1: &#123;</span><br><span class="line">      state: &#123; state2: &quot;&quot; &#125;,</span><br><span class="line">      getters: &#123; getter2: () =&gt; &quot;&quot; &#125;,</span><br><span class="line">      mutations: &#123; mutation2: (state, payload: &#123; b: number &#125;) =&gt; &#123;&#125; &#125;,</span><br><span class="line">      actions: &#123; action2: (context, payload: &#123; b: number &#125;) =&gt; &quot;&quot; &#125;,</span><br><span class="line">      modules: &#123;</span><br><span class="line">        module2: &#123;</span><br><span class="line">          state: &#123; state3: true &#125;,</span><br><span class="line">          getters: &#123; getter3: () =&gt; true &#125;,</span><br><span class="line">          mutations: &#123; mutation3: (state, payload: &#123; c: boolean &#125;) =&gt; &#123;&#125; &#125;,</span><br><span class="line">          actions: &#123; action3: (context, payload: &#123; c: boolean &#125;) =&gt; true &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line">export default store;</span><br><span class="line"></span><br><span class="line">declare module &quot;vuex&quot; &#123;</span><br><span class="line">  export function useStore(): typeof store;</span><br><span class="line">&#125;</span><br><span class="line">declare module &quot;@vue/runtime-core&quot; &#123;</span><br><span class="line">  interface ComponentCustomProperties &#123;</span><br><span class="line">    $store: typeof store;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><p>以后补上（懒）</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blogs/tags/Vue/" rel="tag"># Vue</a>
+              <a href="/blogs/tags/Frontend/" rel="tag"># Frontend</a>
+              <a href="/blogs/tags/TypeScript/" rel="tag"># TypeScript</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/blogs/2021/07/27/saving-intermediate-types-in-complex-type-calculations/" rel="prev" title="在复杂类型计算中保存中间状态">
+                  <i class="fa fa-chevron-left"></i> 在复杂类型计算中保存中间状态
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Charles</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/blogs/js/comments.js"></script><script src="/blogs/js/utils.js"></script><script src="/blogs/js/motion.js"></script><script src="/blogs/js/schemes/muse.js"></script><script src="/blogs/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
