@@ -2902,7 +2902,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #c2815b;
+  background: #9949ff;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
@@ -2958,6 +2958,10 @@ hr {
 
   .gt-popup {
     background-color: var(--content-bg-color) !important;
+  }
+
+  .gt-container a.is--active {
+    color: var(--link-hover-color) !important;
   }
 }
 
