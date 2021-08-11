@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blogs/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blogs/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blogs/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blogs/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blogs/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"thenightmarex.github.io","root":"/blogs/","images":"/blogs/images","scheme":"Mist","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":true,"color":"#713917","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/blogs/js/config.js"></script>
+<meta name="description" content="虽然这属于常识性问题，但对于后端开发入门者而言，关系字段的处理还是很容易出现各种奇怪的问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RESTful接口关系字段最佳实践">
+<meta property="og:url" content="https://thenightmarex.github.io/blogs/2021/08/11/best-practice-of-relation-fields-in-restful-api/index.html">
+<meta property="og:site_name" content="Just Blogs">
+<meta property="og:description" content="虽然这属于常识性问题，但对于后端开发入门者而言，关系字段的处理还是很容易出现各种奇怪的问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-11T04:09:55.000Z">
+<meta property="article:modified_time" content="2021-08-11T04:09:55.119Z">
+<meta property="article:author" content="Charles">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="API">
+<meta property="article:tag" content="RESTful">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://thenightmarex.github.io/blogs/2021/08/11/best-practice-of-relation-fields-in-restful-api/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://thenightmarex.github.io/blogs/2021/08/11/best-practice-of-relation-fields-in-restful-api/","path":"2021/08/11/best-practice-of-relation-fields-in-restful-api/","title":"RESTful接口关系字段最佳实践"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>RESTful接口关系字段最佳实践 | Just Blogs</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/blogs/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/blogs/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Just Blogs</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/blogs/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/blogs/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/blogs/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-about"><a href="/blogs/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%AA%E5%BA%8F%E6%B8%90%E8%BF%9B"><span class="nav-number">1.</span> <span class="nav-text">循序渐进</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%B0%81%E4%B8%8D%E5%8A%A8"><span class="nav-number">1.2.</span> <span class="nav-text">原封不动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E5%A5%97%E5%A8%83"><span class="nav-number">1.3.</span> <span class="nav-text">避免套娃</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E4%B8%80%E5%88%87%E5%B5%8C%E5%A5%97"><span class="nav-number">1.4.</span> <span class="nav-text">避免一切嵌套</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%BF%E5%85%8D-ToMany-%E5%85%B3%E7%B3%BB"><span class="nav-number">1.5.</span> <span class="nav-text">避免 ToMany 关系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">2.</span> <span class="nav-text">最佳实践</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Charles</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blogs/archives/">
+        
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/blogs/tags/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/TheNightmareX" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;TheNightmareX" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:Char2s@outlook.com" title="E-Mail → mailto:Char2s@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://frank3215.github.io/" title="https:&#x2F;&#x2F;frank3215.github.io&#x2F;" rel="noopener" target="_blank">OI-Wiki</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://poppython.com/" title="https:&#x2F;&#x2F;poppython.com&#x2F;" rel="noopener" target="_blank">远子&Vina</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2021/08/11/best-practice-of-relation-fields-in-restful-api/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blogs/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RESTful接口关系字段最佳实践
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-11 12:09:55" itemprop="dateCreated datePublished" datetime="2021-08-11T12:09:55+08:00">2021-08-11</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>虽然这属于常识性问题，但对于后端开发入门者而言，关系字段的处理还是很容易出现各种奇怪的问题。</p>
+<span id="more"></span>
+
+<hr>
+<h1 id="循序渐进"><a href="#循序渐进" class="headerlink" title="循序渐进"></a>循序渐进</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>假如在后端利用 ORM 创建了一个 <code>User</code> 模型、一个 <code>Address</code> 模型：</p>
+<p><code>User</code> 的 <code>username</code> 字段作为<strong>数据字段</strong>存储用户名， <code>addresses</code> 字段作为<strong>关系字段</strong>存储<strong>属于该用户的</strong> <code>Address</code> 实体。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> User &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  username: <span class="built_in">string</span>;</span><br><span class="line">  addresses: Address[];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Address</code> 的 <code>owner</code> 字段作为<strong>关系字段</strong>存储该 <code>Address</code> 实体所属于的 <code>User</code> 实体，<code>content</code> 字段作为<strong>数据字段</strong>存储地址数据。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> Address &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  owner: User;</span><br><span class="line">  content: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>致 ORM 入门者： <code>User</code> 对 <code>Address</code> 为 <em>OneToMany</em> 关系、<code>Address</code> 对 <code>User</code> 为 <em>ManyToOne</em> 关系。这两段关系的建立依靠的是 <code>Address</code> 的 <code>owner</code> 字段，<code>User</code> 的 <code>addresses</code> 字段只是通过反向映射得到的属于该 <code>User</code> 的所有 <code>Address</code>。 也就是说，在数据库中 <code>Address</code> 真的有一个 <code>owner</code> 字段存储指向 <code>User</code> 的外键，而 <code>User</code> 在数据库中并不真正有一个 <code>addresses</code> 字段，<code>addresses</code> 字段是 ORM 进行反向关系映射计算出的。</p>
+</blockquote>
+<hr>
+<p>假设现在有一客户端请求了 <strong>ID 为 1 的 <code>User</code></strong> ，后端该如何在响应体中正确地序列化这些关系字段呢？</p>
+<h2 id="原封不动"><a href="#原封不动" class="headerlink" title="原封不动"></a>原封不动</h2><p>在后端，ORM 为我们构造的实体是存在循环引用的，故简单地通过嵌套来原封不动地发送实体是不可能的：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// /users/1/ GET</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">&quot;username&quot;</span>: <span class="string">&quot;Charles&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;addresses&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="attr">&quot;owner&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="attr">&quot;username&quot;</span>: <span class="string">&quot;Charles&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;addresses&quot;</span>: [</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">&quot;owner&quot;</span>: &#123;</span><br><span class="line">              <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">              <span class="attr">&quot;username&quot;</span>: <span class="string">&quot;Charles&quot;</span>,</span><br><span class="line">              <span class="attr">&quot;addresses&quot;</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                  <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">                  <span class="attr">&quot;owner&quot;</span>: &#123;</span><br><span class="line">                    <span class="comment">// 禁！止！套！娃！</span></span><br><span class="line">                  &#125;,</span><br><span class="line">                  <span class="attr">&quot;content&quot;</span>: <span class="string">&quot;成华大道&quot;</span></span><br><span class="line">                &#125;</span><br><span class="line">              ]</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">&quot;content&quot;</span>: <span class="string">&quot;成华大道&quot;</span></span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;content&quot;</span>: <span class="string">&quot;成华大道&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="避免套娃"><a href="#避免套娃" class="headerlink" title="避免套娃"></a>避免套娃</h2><p>那么在某一层必须要用主键来表示关系以避免发生套娃，那应该在哪一层呢？</p>
+<p>试试尽可能地用嵌套来表示最多的数据？</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// /users/1/ GET</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">&quot;username&quot;</span>: <span class="string">&quot;Charles&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;addresses&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="attr">&quot;owner&quot;</span>: <span class="number">1</span>, <span class="comment">// 👈用主键表示以避免套娃</span></span><br><span class="line">      <span class="attr">&quot;content&quot;</span>: <span class="string">&quot;成华大道&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种方式在特殊情况下是可取的，但大部分情况下都存在问题。</p>
+<p>如果每个 <code>User</code> 都有 999+ 个 <code>Address</code> 呢？ 或者如果除了 <code>addresses</code> 以外 <code>User</code> 还有其他类似的字段呢？如果都用这样一个列表全部展开的话，极端情况下一个响应体的体积就能达到几 MB，更何况在大多数情况下那么多 <code>Address</code> 拿来也不会立即派上作用，获取了一大堆 <code>Address</code> 但随后用户直接退出了应用，那纯粹就是浪费资源了。</p>
+<h2 id="避免一切嵌套"><a href="#避免一切嵌套" class="headerlink" title="避免一切嵌套"></a>避免一切嵌套</h2><p>所以应当尽可能避免一切嵌套：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// /users/1/ GET</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">&quot;username&quot;</span>: <span class="string">&quot;Charles&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;addresses&quot;</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>] <span class="comment">// 👈用主键表示</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>等到需要获取该 <code>User</code> 的 <code>Address</code> 时，再请求 <code>Address</code> 的接口，还可以传查询参数来实现分页、过滤等各种高级功能，使得灵活性得到极大地提升：</p>
+<blockquote>
+<p>对于 <em>OneToOne</em> 关系，再用一个单独的请求来获取对应的实体是完全没有必要的，故对于 <em>OneToOne</em> 关系还是建议用<strong>单层</strong>嵌套的形式来表示。</p>
+</blockquote>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// /addresses/?page=2&amp;id_in=[1,2,3,4,5,6,7,8] GET</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;total&quot;</span>: <span class="number">999999999</span>,</span><br><span class="line">  <span class="attr">&quot;page&quot;</span>: <span class="number">2</span>,</span><br><span class="line">  <span class="attr">&quot;data&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="attr">&quot;owner&quot;</span>: <span class="number">1</span>, <span class="comment">// 👈用主键表示，否则会出现一大堆重复的数据，更何况我们已经有了 ID 为 1 的 `User` 的数据了</span></span><br><span class="line">      <span class="attr">&quot;content&quot;</span>: <span class="string">&quot;成华大道&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="number">2</span>,</span><br><span class="line">      <span class="attr">&quot;owner&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="attr">&quot;content&quot;</span>: <span class="string">&quot;叙利亚战区&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="number">3</span>,</span><br><span class="line">      <span class="attr">&quot;owner&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="attr">&quot;content&quot;</span>: <span class="string">&quot;白宫&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是，如果一个 <code>User</code> 拥有几千几万个 <code>Address</code> 呢？即便是用主键来表示， <code>addresses</code> 字段也可能占用大量的体积，同时也会浪费很多服务器资源，在查询时也可能导致 URL 过长。</p>
+<h2 id="避免-ToMany-关系"><a href="#避免-ToMany-关系" class="headerlink" title="避免 ToMany 关系"></a>避免 ToMany 关系</h2><p>所以尽量避免出现任何 <em>ToMany</em> 关系字段，也就是尽量避免出现任何嵌套的 数组/列表：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// /users/1/ GET</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">&quot;username&quot;</span>: <span class="string">&quot;Charles&quot;</span></span><br><span class="line">  <span class="comment">// &quot;addresses&quot;: [] 👈 从响应体中删除 `addresses` 字段</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样的，要获取该 <code>User</code> 的 <code>Address</code> 时，单独请求接口：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// /addresses/?owner=1&amp;page=2 GET</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;total&quot;</span>: <span class="number">999999999</span>,</span><br><span class="line">  <span class="attr">&quot;page&quot;</span>: <span class="number">2</span>,</span><br><span class="line">  <span class="attr">&quot;data&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="attr">&quot;owner&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="attr">&quot;content&quot;</span>: <span class="string">&quot;成华大道&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h1><ul>
+<li><p><strong>嵌套的实体</strong>应用主键表示，除非该关系为 <em>OneToOne</em> ：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// /users/1/ GET</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">&quot;username&quot;</span>: <span class="string">&quot;Charles&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;department&quot;</span>: <span class="number">1</span>, <span class="comment">// 👈  ManyToOne 关系（多个 User 对应一个 Department）：主键表示</span></span><br><span class="line">  <span class="comment">// 👇 OneToOne 关系（一个 Profile 对应一个 User）： 嵌套数据</span></span><br><span class="line">  <span class="attr">&quot;profile&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">&quot;user&quot;</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">&quot;bio&quot;</span>: <span class="string">&quot;我叫马牛逼，你知道我有多牛逼吗？！&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>关系列表</strong>应避免出现在响应体中</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// /department/1/ GET</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;司马项目经理部&quot;</span></span><br><span class="line">  <span class="comment">// &quot;members&quot;: [] 👈 OneToMany 或 ManyToMany 关系：避免出现关系列表</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>通过查询<strong>参数</strong>来<strong>可选</strong>地嵌套一些<strong>可保证是小规模的</strong>数据:<br>如一个 <code>Book</code> 必定拥有 5 个以内的 <code>Label</code>，而每个 <code>Label</code> 的数据量都很小：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// /books/1/?expand=labels GET</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;如何迎娶富婆&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;labels&quot;</span>: [</span><br><span class="line">    &#123; <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>, <span class="attr">&quot;book&quot;</span>: <span class="number">1</span>, <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;理财&quot;</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">&quot;id&quot;</span>: <span class="number">2</span>, <span class="attr">&quot;book&quot;</span>: <span class="number">1</span>, <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;生活&quot;</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">&quot;id&quot;</span>: <span class="number">3</span>, <span class="attr">&quot;book&quot;</span>: <span class="number">1</span>, <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;白日梦&quot;</span> &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blogs/tags/Web/" rel="tag"># Web</a>
+              <a href="/blogs/tags/API/" rel="tag"># API</a>
+              <a href="/blogs/tags/RESTful/" rel="tag"># RESTful</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/blogs/2021/08/10/there-is-no-need-to-mock-too-much-in-unit-tests/" rel="prev" title="无需在单元测试中进行太多的mock">
+                  <i class="fa fa-chevron-left"></i> 无需在单元测试中进行太多的mock
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Charles</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/blogs/js/comments.js"></script><script src="/blogs/js/utils.js"></script><script src="/blogs/js/motion.js"></script><script src="/blogs/js/schemes/muse.js"></script><script src="/blogs/js/next-boot.js"></script><script src="/blogs/js/bookmark.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"TheNightmareX","repo":"blogs","client_id":"c98a929e94d75fcf613d","client_secret":"c2490673eb568f6abdf92b38640e02ac66e7c75c","admin_user":"TheNightmareX","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"456f2ea292d3522ab17d81901dfd7f88"}</script>
+<script src="/blogs/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

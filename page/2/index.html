@@ -128,14 +128,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/blogs/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/blogs/tags/">
           
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -187,6 +187,157 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2021/07/22/returning-value-explicitly-from-a-constructor/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blogs/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/blogs/2021/07/22/returning-value-explicitly-from-a-constructor/" class="post-title-link" itemprop="url">从构造函数中显式返回一个值</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-07-22 17:42:51 / 修改时间：18:01:37" itemprop="dateCreated datePublished" datetime="2021-07-22T17:42:51+08:00">2021-07-22</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>构造函数中是可以显式返回一个值的。<br>对于 JavaScript，只要求返回值是一个对象即可，否则依然返回实例；<br>对于 TypeScript，则要求返回值的类型必须可赋给类的实例类型。</p>
+<p>利用这一特性，可以实现很多有意思的东西。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blogs/2021/07/22/returning-value-explicitly-from-a-constructor/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2021/07/17/using-the-pipe-to-validate-everything-in-nestjs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blogs/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/blogs/2021/07/17/using-the-pipe-to-validate-everything-in-nestjs/" class="post-title-link" itemprop="url">在NestJS中使用管道验证一切</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-07-17 23:34:46" itemprop="dateCreated datePublished" datetime="2021-07-17T23:34:46+08:00">2021-07-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-08-04 18:14:18" itemprop="dateModified" datetime="2021-08-04T18:14:18+08:00">2021-08-04</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><em>nest</em> 与 <em>class-validator</em> 可以完美整合，对于数据结构、类型的验证，<a target="_blank" rel="noopener" href="https://docs.nestjs.com/techniques/validation#auto-validation"><em>nest</em></a> 和 <a target="_blank" rel="noopener" href="https://github.com/typestack/class-validator#readme"><em>class-validator</em></a> 都有详细的文档，在此不再赘述。然而需要验证的不止有数据结构和字段类型，还有各式的业务需求，这是没有文档提及的。大多数的 <em>nest</em> 使用者选择直接在 <em>services</em> 中进行数据验证，但这样就导致了不优雅的高耦合的代码， <em>nest</em> 推荐使用 <em>pipes</em> 集中验证数据 <del>，但文档却并不打算告诉我们到底怎么在 <em>pipes</em> 里进行业务验证……</del></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blogs/2021/07/17/using-the-pipe-to-validate-everything-in-nestjs/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -792,163 +943,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/blogs/2020/12/06/async-django-views/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2020/11/10/debug-vue-projects-without-cors/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/blogs/images/avatar.gif">
-      <meta itemprop="name" content="Charles">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Just Blogs">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/blogs/2020/11/10/debug-vue-projects-without-cors/" class="post-title-link" itemprop="url">Vue-CLI项目不跨域调试调试后端</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-10 20:32:35" itemprop="dateCreated datePublished" datetime="2020-11-10T20:32:35+08:00">2020-11-10</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-07-21 23:55:12" itemprop="dateModified" datetime="2021-07-21T23:55:12+08:00">2021-07-21</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Django Development Server: <a target="_blank" rel="noopener" href="http://localhost:8000/">http://localhost:8000</a><br>Vue Development Server: <a target="_blank" rel="noopener" href="http://localhost:8080/">http://localhost:8080</a></p>
-<p>无需配置跨域，通过 vue-cli<a target="_blank" rel="noopener" href="https://cli.vuejs.org/zh/config/#devserver-proxy">配置代理</a>即可实现将发往 localhost:8000/api 的请求转发到 localhost:8080/api。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blogs/2020/11/10/debug-vue-projects-without-cors/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2020/10/25/script-labels-in-html/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/blogs/images/avatar.gif">
-      <meta itemprop="name" content="Charles">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Just Blogs">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/blogs/2020/10/25/script-labels-in-html/" class="post-title-link" itemprop="url">HTML中的`script`标签</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-25 16:41:59" itemprop="dateCreated datePublished" datetime="2020-10-25T16:41:59+08:00">2020-10-25</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-07-21 23:55:12" itemprop="dateModified" datetime="2021-07-21T23:55:12+08:00">2021-07-21</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>&lt;script&gt; 已经衍生出多种加载方式：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blogs/2020/10/25/script-labels-in-html/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
