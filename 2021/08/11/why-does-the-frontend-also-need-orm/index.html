@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blogs/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blogs/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blogs/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blogs/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blogs/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"thenightmarex.github.io","root":"/blogs/","images":"/blogs/images","scheme":"Mist","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":true,"color":"#713917","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/blogs/js/config.js"></script>
+<meta name="description" content="ORM（Object Relational Mapping），指对象关系映射。但在后端，ORM 通常指一个用来操作数据库的 Lib，除了对象关系映射以外，通常还包含了 SQL 语句生成、数据库表建模等等。前端所需要的 ORM 不用那么多杂七杂八的附加功能，只需要对象关系映射这一最基本的功能就够了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么前端也需要ORM">
+<meta property="og:url" content="https://thenightmarex.github.io/blogs/2021/08/11/why-does-the-frontend-also-need-orm/index.html">
+<meta property="og:site_name" content="Just Blogs">
+<meta property="og:description" content="ORM（Object Relational Mapping），指对象关系映射。但在后端，ORM 通常指一个用来操作数据库的 Lib，除了对象关系映射以外，通常还包含了 SQL 语句生成、数据库表建模等等。前端所需要的 ORM 不用那么多杂七杂八的附加功能，只需要对象关系映射这一最基本的功能就够了。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-11T08:45:05.000Z">
+<meta property="article:modified_time" content="2021-08-11T08:45:05.577Z">
+<meta property="article:author" content="Charles">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="ORM">
+<meta property="article:tag" content="Frontend">
+<meta property="article:tag" content="TypeScript">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://thenightmarex.github.io/blogs/2021/08/11/why-does-the-frontend-also-need-orm/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://thenightmarex.github.io/blogs/2021/08/11/why-does-the-frontend-also-need-orm/","path":"2021/08/11/why-does-the-frontend-also-need-orm/","title":"为什么前端也需要ORM"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>为什么前端也需要ORM | Just Blogs</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/blogs/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/blogs/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Just Blogs</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/blogs/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/blogs/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/blogs/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-about"><a href="/blogs/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84"><span class="nav-number">1.</span> <span class="nav-text">对象关系映射</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E9%A1%B9%E7%9B%AE%E9%9C%80%E8%A6%81%E5%89%8D%E7%AB%AF-ORM"><span class="nav-number">2.</span> <span class="nav-text">什么项目需要前端 ORM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%87%87%E7%94%A8%E5%89%8D%E7%AB%AF-ORM-%E6%9C%89%E4%BB%80%E4%B9%88%E5%A5%BD%E5%A4%84"><span class="nav-number">3.</span> <span class="nav-text">采用前端 ORM 有什么好处</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">3.1.</span> <span class="nav-text">场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E6%98%AF-Data"><span class="nav-number">3.1.1.</span> <span class="nav-text">如果是 Data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E6%98%AF-Model"><span class="nav-number">3.1.2.</span> <span class="nav-text">如果是 Model</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BE%83%E6%88%90%E7%86%9F%E7%9A%84%E5%89%8D%E7%AB%AF-ORM-%E5%BA%93"><span class="nav-number">4.</span> <span class="nav-text">较成熟的前端 ORM 库</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Charles</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blogs/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/blogs/tags/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/TheNightmareX" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;TheNightmareX" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:Char2s@outlook.com" title="E-Mail → mailto:Char2s@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://frank3215.github.io/" title="https:&#x2F;&#x2F;frank3215.github.io&#x2F;" rel="noopener" target="_blank">OI-Wiki</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://poppython.com/" title="https:&#x2F;&#x2F;poppython.com&#x2F;" rel="noopener" target="_blank">远子&Vina</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2021/08/11/why-does-the-frontend-also-need-orm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blogs/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          为什么前端也需要ORM
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-11 16:45:05" itemprop="dateCreated datePublished" datetime="2021-08-11T16:45:05+08:00">2021-08-11</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>ORM（Object Relational Mapping），指<strong>对象关系映射</strong>。但在后端，<em>ORM</em> 通常指一个用来操作数据库的 Lib，除了对象关系映射以外，通常还包含了 SQL 语句生成、数据库表建模等等。前端所需要的 ORM 不用那么多杂七杂八的附加功能，只需要<strong>对象关系映射</strong>这一最基本的功能就够了。</p>
+<span id="more"></span>
+
+<h1 id="对象关系映射"><a href="#对象关系映射" class="headerlink" title="对象关系映射"></a>对象关系映射</h1><p>何谓对象关系映射？ <em>OneToOne</em> 、 <em>OneToMany</em> / <em>ManyToOne</em> 、 <em>ManyToMany</em> 这些都是对象间的关系。 这些对象间通常都存在循环引用，如：狗勾的主人的第一只狗勾就是这只狗勾本身 🐕（<code>dog.master.dogs[0] == dog</code>）。在运行时，对象可能长这样：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dogs = &#123;</span><br><span class="line">  <span class="number">1</span>: &#123;</span><br><span class="line">    <span class="attr">id</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&quot;汪汪&quot;</span>,</span><br><span class="line">    <span class="attr">master</span>: &#123;</span><br><span class="line">      <span class="attr">id</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&quot;马牛逼&quot;</span>,</span><br><span class="line">      <span class="attr">dogs</span>: [</span><br><span class="line">        <span class="comment">// 禁止套娃</span></span><br><span class="line">      ],</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="number">2</span>: &#123;</span><br><span class="line">    <span class="attr">id</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&quot;嗷嗷&quot;</span>,</span><br><span class="line">    <span class="attr">master</span>: &#123;</span><br><span class="line">      <span class="attr">id</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&quot;马牛逼&quot;</span>,</span><br><span class="line">      <span class="attr">dogs</span>: [</span><br><span class="line">        <span class="comment">// 禁止套娃</span></span><br><span class="line">      ],</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> people = &#123;</span><br><span class="line">  <span class="number">1</span>: &#123;</span><br><span class="line">    <span class="attr">id</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&quot;马牛逼&quot;</span>,</span><br><span class="line">    <span class="attr">dogs</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">id</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="attr">name</span>: <span class="string">&quot;汪汪&quot;</span>,</span><br><span class="line">        <span class="attr">master</span>: &#123;</span><br><span class="line">          <span class="comment">// 禁止套娃</span></span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">id</span>: <span class="number">2</span>,</span><br><span class="line">        <span class="attr">name</span>: <span class="string">&quot;嗷嗷&quot;</span>,</span><br><span class="line">        <span class="attr">master</span>: &#123;</span><br><span class="line">          <span class="comment">// 禁止套娃</span></span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>由于存在循环引用，这样的对象只能存在于运行时。要想保存在本地，就必须用一个给每个<strong>Model</strong>一个标识符（ID），并用标识符来代替无止境的嵌套。于是，存储时的形式可能是这样的：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;dogs&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;1&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;汪汪&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;master&quot;</span>: <span class="number">1</span> <span class="comment">// 👈 用 ID 来代替避免嵌套</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;2&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="number">2</span>,</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;嗷嗷&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;master&quot;</span>: <span class="number">1</span> <span class="comment">// 👈 用 ID 来代替避免嵌套</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;people&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;1&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;马牛逼&quot;</span></span><br><span class="line">      <span class="comment">// &quot;dogs&quot;: [] 👈 不需要 `dogs`，因为 `dogs` 可以从 dog.master 反向推导得出</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>存储形式的对象称为 <strong>Data</strong> ，运行时形式的对象称为 <strong>Model</strong> 。<br><strong>对象关系映射</strong>，可以理解为就是：将 <strong>Data</strong> 转换到 <strong>Model</strong> ，将 <strong>Model</strong> 转换回 <strong>Data</strong>。</p>
+<h1 id="什么项目需要前端-ORM"><a href="#什么项目需要前端-ORM" class="headerlink" title="什么项目需要前端 ORM"></a>什么项目需要前端 ORM</h1><p>对于大部分 Web 项目而言，前端 <strong><em>并不</em></strong> 需要 ORM。<br>对于<strong>传统</strong>的<strong>后端渲染</strong>项目，数据直接由后端渲染进 HTML 里了，前端几乎都不需要 JavaScript，更别说需要 ORM 了。<br>而在前后端分离的单页面 WebApp 中，大多采用<em>数据即用即取，用过就删</em>的策略，要啥数据就请求啥数据，发一大堆请求，数据也不会被长时间存储，用 ORM 还有什么意义呢？</p>
+<p>前端 ORM 面向的项目，是持久存储数据的大型 WebApp，这类 WebApp 会尽可能地减少请求数量、尽可能复用更多的数据以提升用户体验，尽可能减少繁杂的数据处理代码以提升项目的稳健性以及代码的可读性，大多同时实现了数据的实时更新。</p>
+<h1 id="采用前端-ORM-有什么好处"><a href="#采用前端-ORM-有什么好处" class="headerlink" title="采用前端 ORM 有什么好处"></a>采用前端 ORM 有什么好处</h1><p>对于大部分的 WebApp：</p>
+<ol>
+<li>前端请求接口</li>
+<li>后端 ORM 从数据库读取 <strong>Data</strong></li>
+<li>后端 ORM 将 <strong>Data</strong> 转换到 <strong>Model</strong></li>
+<li>后端对 <strong>Model</strong> 进行业务处理、加工</li>
+<li>后端将 <strong>Model</strong> <strong>序列化</strong>回 <strong>Data</strong>，放入响应体</li>
+<li>后端发送响应</li>
+<li>前端接受响应</li>
+<li>前端处理 <strong>Data</strong></li>
+<li>前端展示 <strong>Data</strong></li>
+</ol>
+<p>对于采用了 ORM 的 WebApp：</p>
+<ol>
+<li><em>前端请求接口</em></li>
+<li><em>后端 ORM 从数据库读取 Data</em></li>
+<li><em>后端 ORM 将 Data 转换到 <strong>Model</strong></em></li>
+<li><em>后端对 Model 进行业务处理、加工</em></li>
+<li><em>后端将 Model 序列化为近似 Data 的形式，放入响应体</em></li>
+<li><em>后端发送响应</em></li>
+<li><em>前端接受响应</em></li>
+<li><strong>前端 ORM 将响应体中的 Data 转换为 Model</strong></li>
+<li><strong>前端处理 Model</strong></li>
+<li><strong>前端展示 Model</strong></li>
+</ol>
+<p>由于响应体中的数据也是 <strong>Data</strong>，故前端 ORM 可以将 <strong>Data</strong> 处理为 <strong>Model</strong> 后再暴露给业务逻辑层，那么为什么前端会需要 Model ？</p>
+<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> UserModel &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  username: <span class="built_in">string</span>;</span><br><span class="line">  memberships: MembershipModel[];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> UserData &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  username: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> MembershipModel &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  owner: User;</span><br><span class="line">  chatroom: ChatroomModel;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> MembershipData &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  owner: <span class="built_in">number</span>;</span><br><span class="line">  chatroom: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> ChatroomModel &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  name: <span class="built_in">string</span>;</span><br><span class="line">  memberships: MembershipModel[];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> ChatroomData &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  name: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如何获取 <strong>ID 为 1 的 <code>User</code> 的第 5 个 <code>Membership</code> 所属的 <code>Classroom</code> 的名字</strong>？</p>
+<h3 id="如果是-Data"><a href="#如果是-Data" class="headerlink" title="如果是 Data"></a>如果是 Data</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="keyword">const</span> users: Record&lt;<span class="built_in">number</span>, UserData&gt;;</span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">const</span> memberships: Record&lt;<span class="built_in">number</span>, MembershipData&gt;;</span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">const</span> chatrooms: Record&lt;<span class="built_in">number</span>, ChatroomData&gt;;</span><br></pre></td></tr></table></figure>
+
+<p>标准流程：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取属于该用户的所有 `Membership`</span></span><br><span class="line"><span class="comment">// 一下子获取所有是为了以后复用，也可以用 `for` 查询到第五个就 `break`</span></span><br><span class="line"><span class="keyword">const</span> userMemberships = <span class="built_in">Object</span>.values(memberships).filter(</span><br><span class="line">  <span class="function">(<span class="params">membership</span>) =&gt;</span> membership.owner == <span class="number">1</span></span><br><span class="line">);</span><br><span class="line"><span class="comment">/**目标（第5个） `Membership` */</span></span><br><span class="line"><span class="keyword">const</span> targetMembership = userMemberships[<span class="number">4</span>];</span><br><span class="line"><span class="comment">/**目标 `Membership` 所属的 `Chatroom` */</span></span><br><span class="line"><span class="keyword">const</span> targetChatroom = chatrooms[targetMembership.chatroom];</span><br><span class="line"><span class="keyword">const</span> name = targetChatroom.name;</span><br><span class="line"><span class="built_in">console</span>.log(name); <span class="comment">// &quot;小葵花妈妈课堂开课啦&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>或者写在一起？</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(</span><br><span class="line">  chatrooms[</span><br><span class="line">    <span class="built_in">Object</span>.values(memberships).filter(<span class="function">(<span class="params">membership</span>) =&gt;</span> membership.owner == <span class="number">1</span>)[<span class="number">4</span>]</span><br><span class="line">      .chatroom</span><br><span class="line">  ].name</span><br><span class="line">); <span class="comment">// &quot;小葵花妈妈课堂开课啦&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="如果是-Model"><a href="#如果是-Model" class="headerlink" title="如果是 Model"></a>如果是 Model</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Type&lt;T&gt; = &#123; <span class="keyword">new</span> (...args: <span class="built_in">any</span>[]): T &#125;;</span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">const</span> orm: &#123;</span><br><span class="line">  findOne&lt;T&gt;(<span class="keyword">type</span>: Type&lt;T&gt;, id: <span class="built_in">number</span>): T;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> name = orm.findOne(User, <span class="number">1</span>).memberships[<span class="number">4</span>].chatroom.name;</span><br><span class="line"><span class="built_in">console</span>.debug(name); <span class="comment">// &quot;小葵花妈妈课堂开课啦&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>一目了然</p>
+<h1 id="较成熟的前端-ORM-库"><a href="#较成熟的前端-ORM-库" class="headerlink" title="较成熟的前端 ORM 库"></a>较成熟的前端 ORM 库</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://vuex-orm.org/">vuex-orm (2.2k)</a></li>
+<li>没了 :]</li>
+</ul>
+<hr>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blogs/tags/Web/" rel="tag"># Web</a>
+              <a href="/blogs/tags/ORM/" rel="tag"># ORM</a>
+              <a href="/blogs/tags/Frontend/" rel="tag"># Frontend</a>
+              <a href="/blogs/tags/TypeScript/" rel="tag"># TypeScript</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/blogs/2021/08/11/best-practice-of-relation-fields-in-restful-api/" rel="prev" title="RESTful接口关系字段最佳实践">
+                  <i class="fa fa-chevron-left"></i> RESTful接口关系字段最佳实践
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Charles</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/blogs/js/comments.js"></script><script src="/blogs/js/utils.js"></script><script src="/blogs/js/motion.js"></script><script src="/blogs/js/schemes/muse.js"></script><script src="/blogs/js/next-boot.js"></script><script src="/blogs/js/bookmark.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"TheNightmareX","repo":"blogs","client_id":"c98a929e94d75fcf613d","client_secret":"c2490673eb568f6abdf92b38640e02ac66e7c75c","admin_user":"TheNightmareX","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"43ceb9a45cb29328ad784f7f0b24d50a"}</script>
+<script src="/blogs/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
