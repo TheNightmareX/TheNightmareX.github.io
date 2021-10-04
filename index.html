@@ -128,7 +128,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/blogs/archives/">
         
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -187,6 +187,86 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2021/10/04/error-message-style/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blogs/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/blogs/2021/10/04/error-message-style/" class="post-title-link" itemprop="url">错误消息风格</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-04 20:20:04" itemprop="dateCreated datePublished" datetime="2021-10-04T20:20:04+08:00">2021-10-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li>只用一句话<ul>
+<li>Cannot access this department, because you are not a member of it X</li>
+<li>Cannot access departments of which you are not a member √</li>
+</ul>
+</li>
+<li><strong>不</strong>使用句号结尾<ul>
+<li>Must authenticate first. X</li>
+<li>Must authenticate first</li>
+</ul>
+</li>
+<li>使用 “must”, “cannot” 等直接说明原因，不拐弯抹角<ul>
+<li>Username already exists X</li>
+<li>Cannot create a user with a duplicate username √</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -802,85 +882,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/blogs/2021/07/27/super-awesome-vuex-type-declaration/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2021/07/27/saving-intermediate-types-in-complex-type-calculations/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/blogs/images/avatar.gif">
-      <meta itemprop="name" content="Charles">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Just Blogs">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/blogs/2021/07/27/saving-intermediate-types-in-complex-type-calculations/" class="post-title-link" itemprop="url">在复杂类型计算中保存中间状态</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-07-27 15:02:39 / 修改时间：15:05:43" itemprop="dateCreated datePublished" datetime="2021-07-27T15:02:39+08:00">2021-07-27</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>假设我们有一个 <code>ExtractKeys</code> 工具类型用来<strong>提取一个对象中对应的值满足条件的所有键</strong>：</p>
-<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> ExtractKeys&lt;Obj, ValueType&gt; = &#123;</span><br><span class="line">  [Key <span class="keyword">in</span> keyof Obj]: Obj[Key] <span class="keyword">extends</span> ValueType ? Key : <span class="built_in">never</span>;</span><br><span class="line">&#125;[keyof Obj];</span><br></pre></td></tr></table></figure>
-
-<p>如果有一个新类型要实现<strong>仅在指定键也满足条件时</strong>提取一个对象中对应的值满足条件的所有键呢？</p>
-<p>似乎需要<strong>以同样的参数重复调用</strong>两次 <code>ExtractKeys</code>：</p>
-<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> ExtractKeysIfIncludes&lt;</span><br><span class="line">  Key <span class="keyword">extends</span> <span class="built_in">string</span>,</span><br><span class="line">  Obj,</span><br><span class="line">  ValueType</span><br><span class="line">&gt; = Key <span class="keyword">extends</span> ExtractKeys&lt;Obj, ValueType&gt;</span><br><span class="line">  ? ExtractKeys&lt;Obj, ValueType&gt;</span><br><span class="line">  : <span class="built_in">never</span>;</span><br></pre></td></tr></table></figure>
-
-<p>那如果有极端复杂的类型，难道需要<strong>以同样的参数重复调用同一个类型</strong>几次十几次几十次？这是难以接受的<del>（虽然我以前就这么干）</del>，那有没有更优美的实现呢？</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blogs/2021/07/27/saving-intermediate-types-in-complex-type-calculations/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
