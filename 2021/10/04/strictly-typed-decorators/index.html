@@ -20,18 +20,21 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"thenightmarex.github.io","root":"/blogs/","images":"/blogs/images","scheme":"Mist","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/blogs/js/config.js"></script>
-<meta name="description" content="类型严格的装饰器？装饰器还能怎么类型严格? 事实上，装饰器不仅可以限制选项的类型，还可以限制目标类的类型。而对于属性装饰器和方法装饰器，还可以限制目标属性名的类型（string、number、symbol），更强大的是，还可以限制目标属性值的类型。">
+<meta name="description" content="类型严格的装饰器？装饰器还能怎么类型严格? 事实上，装饰器是可以限制目标类的类型的，对于属性装饰器和方法装饰器，还可以限制目标属性名的类型（string、number、symbol），更强大的是，可以限制目标属性值的类型！ 听我这么说，你一定没有什么概念，那我们举个例子吧！ Berry ORM 就是这样的一个极度注重类型的轻量级 Browser&#x2F;Node ORM，我们在这里以它为例。 @Entit">
 <meta property="og:type" content="article">
 <meta property="og:title" content="类型严格的装饰器">
 <meta property="og:url" content="https://thenightmarex.github.io/blogs/2021/10/04/strictly-typed-decorators/index.html">
 <meta property="og:site_name" content="Just Blogs">
-<meta property="og:description" content="类型严格的装饰器？装饰器还能怎么类型严格? 事实上，装饰器不仅可以限制选项的类型，还可以限制目标类的类型。而对于属性装饰器和方法装饰器，还可以限制目标属性名的类型（string、number、symbol），更强大的是，还可以限制目标属性值的类型。">
+<meta property="og:description" content="类型严格的装饰器？装饰器还能怎么类型严格? 事实上，装饰器是可以限制目标类的类型的，对于属性装饰器和方法装饰器，还可以限制目标属性名的类型（string、number、symbol），更强大的是，可以限制目标属性值的类型！ 听我这么说，你一定没有什么概念，那我们举个例子吧！ Berry ORM 就是这样的一个极度注重类型的轻量级 Browser&#x2F;Node ORM，我们在这里以它为例。 @Entit">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://thenightmarex.github.io/blogs/2021/10/04/strictly-typed-decorators/berry-orm-example-decorator-entity.jpg">
+<meta property="og:image" content="https://thenightmarex.github.io/blogs/2021/10/04/strictly-typed-decorators/berry-orm-example-decorator-primary.jpg">
 <meta property="article:published_time" content="2021-10-04T12:08:57.000Z">
-<meta property="article:modified_time" content="2021-10-04T12:50:56.236Z">
+<meta property="article:modified_time" content="2021-10-05T13:45:20.812Z">
 <meta property="article:author" content="Charles">
 <meta property="article:tag" content="TypeScript">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thenightmarex.github.io/blogs/2021/10/04/strictly-typed-decorators/berry-orm-example-decorator-entity.jpg">
 
 
 <link rel="canonical" href="https://thenightmarex.github.io/blogs/2021/10/04/strictly-typed-decorators/">
@@ -119,7 +122,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">类装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">应用场景</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">属性装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%90%E5%88%B6%E7%9B%AE%E6%A0%87%E7%B1%BB%E5%92%8C%E7%9B%AE%E6%A0%87%E5%B1%9E%E6%80%A7%E5%90%8D%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.1.</span> <span class="nav-text">限制目标类和目标属性名的类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%90%E5%88%B6%E7%9B%AE%E6%A0%87%E5%B1%9E%E6%80%A7%E5%80%BC%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">限制目标属性值的类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-1"><span class="nav-number">2.3.</span> <span class="nav-text">应用场景</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">方法装饰器</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">类装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">应用场景</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">属性装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%90%E5%88%B6%E7%9B%AE%E6%A0%87%E7%B1%BB%E5%92%8C%E7%9B%AE%E6%A0%87%E5%B1%9E%E6%80%A7%E5%90%8D"><span class="nav-number">2.1.</span> <span class="nav-text">限制目标类和目标属性名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%90%E5%88%B6%E7%9B%AE%E6%A0%87%E5%B1%9E%E6%80%A7%E5%80%BC"><span class="nav-number">2.2.</span> <span class="nav-text">限制目标属性值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-1"><span class="nav-number">2.3.</span> <span class="nav-text">应用场景</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">方法装饰器</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -225,10 +228,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2021-10-04 20:08:57 / 修改时间：20:50:56" itemprop="dateCreated datePublished" datetime="2021-10-04T20:08:57+08:00">2021-10-04</time>
+      <time title="创建时间：2021-10-04 20:08:57" itemprop="dateCreated datePublished" datetime="2021-10-04T20:08:57+08:00">2021-10-04</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-10-05 21:45:20" itemprop="dateModified" datetime="2021-10-05T21:45:20+08:00">2021-10-05</time>
+      </span>
 
   
 </div>
@@ -241,7 +250,18 @@
     
     <div class="post-body" itemprop="articleBody">
         <p><strong>类型严格的装饰器</strong>？装饰器还能怎么类型严格?</p>
-<p>事实上，装饰器不仅可以限制选项的类型，还可以限制<strong>目标类</strong>的类型。而对于<em>属性装饰器</em>和<em>方法装饰器</em>，还可以限制<strong>目标属性名</strong>的类型（<code>string</code>、<code>number</code>、<code>symbol</code>），更强大的是，还可以限制<strong>目标属性值</strong>的类型。</p>
+<p>事实上，装饰器是可以限制<strong>目标类</strong>的类型的，对于<em>属性装饰器</em>和<em>方法装饰器</em>，还可以限制<strong>目标属性名</strong>的类型（<code>string</code>、<code>number</code>、<code>symbol</code>），更强大的是，可以限制<strong>目标属性值</strong>的类型！</p>
+<p>听我这么说，你一定没有什么概念，那我们举个例子吧！</p>
+<p>Berry ORM 就是这样的一个<strong>极度注重类型</strong>的轻量级 Browser/Node ORM，我们在这里以它为例。</p>
+<p><code>@Entity()</code> 必须被应用在正确的实体定义上，否则便会抛出一个错误：</p>
+<img src="/blogs/2021/10/04/strictly-typed-decorators/berry-orm-example-decorator-entity.jpg" class="" title="类型严格的@Entity()装饰器">
+
+<p><code>@Primary()</code> 也必须应用在类型为 <code>number</code> 或为 <code>string</code> 的字段上（<code>number | string</code> 类型也是不允许的）：</p>
+<img src="/blogs/2021/10/04/strictly-typed-decorators/berry-orm-example-decorator-primary.jpg" class="" title="类型严格的@Primary()装饰器">
+
+<p>有概念了吗！没错！这就是<strong>类型严格的装饰器</strong>的强大魅力！</p>
+<p>当然，Berry ORM 的严格类型比上面所列举的还要强大得多，如果你感兴趣，可以通过<a href="https://thenightmarex.github.io/berry-orm/zh/">它的文档</a>了解它的全部特性。</p>
+<p>现在，让我们开始吧！</p>
 <span id="more"></span>
 
 <h1 id="类装饰器"><a href="#类装饰器" class="headerlink" title="类装饰器"></a>类装饰器</h1><p>通常我们创建类装饰器会直接使用 TypeScript 内置的 <code>ClassDecorator</code> 类型：</p>
@@ -250,16 +270,21 @@
 <p>现在，假设我们有两个类：</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SomeClass</span> </span>&#123;</span><br><span class="line">  someProperty = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AnotherClass</span> </span>&#123;</span><br><span class="line">  someProperty = <span class="string">&quot;a&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>如何限制我们的装饰器使其只能被应用在 <code>SomeClass</code> 上呢？</p>
-<p>在 TypeScript 中，应用装饰器的过程，会被翻译成普通的传参：</p>
+<p>如何限制我们的装饰器使其只能被应用在 <strong>实例类型满足 <code>SomeClass</code> 类型的类</strong> 上呢？</p>
+<p>在 TypeScript 中，应用装饰器的过程，会被翻译成类似这样的普通的函数调用：</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Decorator</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Class</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Class</span> </span>&#123;&#125;</span><br><span class="line">Class = Decorator(Class) ?? Class; <span class="comment">// 这一句实际上会报错，只是示意原理</span></span><br></pre></td></tr></table></figure>
 
-<p>故，只要我们<strong>不</strong>使用 <code>ClassDecorator</code> 中自带的参数类型，转而自行指定 <code>target</code> 参数的类型，就可以实现这一点：</p>
+<p>之所以我们之前的类装饰器可以应用在所有的类上，是因为 TypeScript 内置的 <code>ClassDecorator</code> 类型将 <code>target</code> 参数的类型指定为了 <code>object</code>，而任何的类都满足这个类型。</p>
+<blockquote>
+<p>事实上，绝大部分类型都满足 <code>object</code>，故 TypeScript ESLint 的 ban-types 规则便将 <code>object</code> 类型包括在了禁用的类型中。</p>
+</blockquote>
+<p>那么如果我们将装饰器的 <code>target</code> 参数指定为一个特定的类型，是否就可以实现限制这个装饰器的目标类了呢？</p>
+<p>要为指定 <code>target</code> 指定一个我们自己的类型，我们需要先移除 <code>ClassDecorator</code> 类型。否则虽然装饰器内部的 <code>target</code> 参数是我们自己的类型了，但在外部，<code>target</code> 参数的类型仍旧会是 <code>object</code>。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Type&lt;T&gt; = <span class="keyword">new</span> (...args: <span class="built_in">any</span>[]) =&gt; T;</span><br><span class="line"><span class="keyword">const</span> StrictClassDecorator = <span class="function">(<span class="params">target: Type&lt;SomeClass&gt;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<p>我们会发现，这个装饰器只能应用在 <strong>实例类型满足 <code>SomeClass</code> 类型的类</strong>：</p>
+<p>我们会发现，我们成功实现了将这个装饰器的目标类限制在 <strong>实例类型满足 <code>SomeClass</code> 类型的类</strong> 上：</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@StrictClassDecorator</span> <span class="comment">// pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DerivedClassA</span> <span class="keyword">extends</span> <span class="title">SomeClass</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@StrictClassDecorator</span> <span class="comment">// fail</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DerivedClassB</span> <span class="keyword">extends</span> <span class="title">AnotherClass</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
 
 <p>由此，我们便实现了一个最基本的<strong>类型严格</strong>的类装饰器。</p>
@@ -270,17 +295,17 @@
 <h1 id="属性装饰器"><a href="#属性装饰器" class="headerlink" title="属性装饰器"></a>属性装饰器</h1><p>首先，假设我们有这些玩意：</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> PROPERTY_C = <span class="built_in">Symbol</span>();</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SomeClass</span> </span>&#123;</span><br><span class="line">  propertyA = <span class="number">1</span>;</span><br><span class="line">  propertyB = <span class="string">&quot;a&quot;</span>;</span><br><span class="line">  [PROPERTY_C] = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="限制目标类和目标属性名的类型"><a href="#限制目标类和目标属性名的类型" class="headerlink" title="限制目标类和目标属性名的类型"></a>限制目标类和目标属性名的类型</h2><p>先前，我们创建属性装饰器时，会使用 TypeScript 内置的 <code>PropertyDecorator</code> 类型。同理，可以通过自行指定参数类型来实现类型限制:</p>
+<h2 id="限制目标类和目标属性名"><a href="#限制目标类和目标属性名" class="headerlink" title="限制目标类和目标属性名"></a>限制目标类和目标属性名</h2><p>先前，我们创建属性装饰器时，会使用 TypeScript 内置的 <code>PropertyDecorator</code> 类型。同理，可以通过自行指定参数类型来实现类型限制:</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> StrictPropertyDecorator = <span class="function">(<span class="params">target: SomeClass, propertyKey: symbol</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>注意，属性装饰器和方法装饰器的 <code>target</code> 参数与类装饰器的不同，后者的 <code>target</code> 是类本身，而前者的 <code>target</code> 是这个类的 <code>prototype</code>。所以，我们在这里只需要将 <code>target</code> 参数的类型指定为 <code>SomeClass</code> 即可，而非 <code>Type&lt;SomeClass&gt;</code>。</p>
 <p>如果用 <code>targetA</code> 来表示类装饰器的 <code>target</code> 参数，用 <code>targetB</code> 来表示属性装饰器和类装饰器的 <code>target</code> 参数，则 <code>targetA.prototype == targetB &amp;&amp; targetA == targetB.constructor</code> 将返回 <code>true</code>。</p>
 </blockquote>
-<p>如此一来，这个装饰器便只能应用在 <strong>实例类型满足 <code>SomeClass</code> 类型的类</strong> 中 <strong>标识符满足 <code>symbol</code> 类型的属性</strong> 上了。可以不严谨地理解为，这个装饰器只能应用在 <code>SomeClass</code> 及其派生类中的符号属性上了：</p>
+<p>如此一来，这个装饰器便只能应用在 <strong>实例类型满足 <code>SomeClass</code> 类型的类</strong> 中 <strong>标识符满足 <code>symbol</code> 类型的属性</strong> 上了：</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DerivedClass</span> <span class="keyword">extends</span> <span class="title">SomeClass</span> </span>&#123;</span><br><span class="line">  <span class="meta">@StrictPropertyDecorator</span> <span class="comment">// pass</span></span><br><span class="line">  [PROPERTY_C] = <span class="built_in">super</span>[PROPERTY_C];</span><br><span class="line"></span><br><span class="line">  <span class="meta">@StrictPropertyDecorator</span> <span class="comment">// fail</span></span><br><span class="line">  propertyA = <span class="built_in">super</span>.propertyA;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AnotherClass</span> </span>&#123;</span><br><span class="line">  <span class="meta">@StrictPropertyDecorator</span> <span class="comment">// fail</span></span><br><span class="line">  [PROPERTY_C] = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="限制目标属性值的类型"><a href="#限制目标属性值的类型" class="headerlink" title="限制目标属性值的类型"></a>限制目标属性值的类型</h2><p>现在我们已经实现了限制<strong>目标类</strong>的类型和<strong>目标属性名</strong>的类型，但开头还提到，我们可以限制<strong>目标属性值</strong>的类型。然而根据属性装饰器所获得的参数，我们并不能通过简单地指定一个类型来实现，那又该怎么办呢？</p>
+<h2 id="限制目标属性值"><a href="#限制目标属性值" class="headerlink" title="限制目标属性值"></a>限制目标属性值</h2><p>现在我们已经实现了限制<strong>目标类</strong>的类型和<strong>目标属性名</strong>的类型，但开头还提到，我们可以限制<strong>目标属性值</strong>的类型。然而根据属性装饰器所获得的参数，我们并不能通过简单地指定一个类型来实现，那又该怎么办呢？</p>
 <p>装饰器中，我们能限制的只有类的类型和属性名的类型，那我们便可以通过获取出 _<strong>值</strong>满足某一类型的所有<strong>键</strong>_ ，再通过限制<strong>键</strong>来间接地限制值。</p>
 <p>首先我们需要创建一个能够获取 <em>一个类型中<strong>值</strong>满足某一类型的所有<strong>键</strong></em> 的工具类型。这里是我的实现：</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> ValueMatchedKey&lt;Type, Value&gt; = &#123;</span><br><span class="line">  [Key <span class="keyword">in</span> keyof Type]: Type[Key] <span class="keyword">extends</span> Value ? Key : <span class="built_in">never</span>;</span><br><span class="line">&#125;[keyof Type];</span><br></pre></td></tr></table></figure>
@@ -293,7 +318,7 @@
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> StrictPropertyDecorator = <span class="function">(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">  target: SomeClass,</span></span></span><br><span class="line"><span class="params"><span class="function">  propertyKey: ValueMatchedKey&lt;SomeClass, <span class="built_in">number</span>&gt;</span></span></span><br><span class="line"><span class="params"><span class="function"></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>这个装饰器只能应用在 <strong>实例类型满足 <code>SomeClass</code> 类型的类</strong> 中 <strong>值满足 <code>number</code> 的属性</strong> 上，不严谨地说，只能应用在 <code>SomeClass</code> 及其派生类中值为 <code>number</code> 的属性上：</p>
-<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DerivedClass</span> <span class="keyword">extends</span> <span class="title">SomeClass</span> </span>&#123;</span><br><span class="line">  <span class="meta">@StrictPropertyDecorator</span> <span class="comment">// pass</span></span><br><span class="line">  propertyA = <span class="built_in">super</span>.propertyA;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@StrictPropertyDecorator</span> <span class="comment">// fail</span></span><br><span class="line">  propertyB = <span class="built_in">super</span>.propertyB;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@StrictPropertyDecorator</span> <span class="comment">// fail</span></span><br><span class="line">  [PROPERTY_C] = <span class="built_in">super</span>[PROPERTY_C];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AnotherClass</span> </span>&#123;</span><br><span class="line">  <span class="meta">@StrictPropertyDecorator</span> <span class="comment">// fail</span></span><br><span class="line">  [PROPERTY_C] = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DerivedClass</span> <span class="keyword">extends</span> <span class="title">SomeClass</span> </span>&#123;</span><br><span class="line">  <span class="meta">@StrictPropertyDecorator</span> <span class="comment">// pass</span></span><br><span class="line">  propertyA = <span class="built_in">super</span>.propertyA;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@StrictPropertyDecorator</span> <span class="comment">// fail</span></span><br><span class="line">  propertyB = <span class="built_in">super</span>.propertyB;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@StrictPropertyDecorator</span> <span class="comment">// fail</span></span><br><span class="line">  [PROPERTY_C] = <span class="built_in">super</span>[PROPERTY_C];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AnotherClass</span> </span>&#123;</span><br><span class="line">  <span class="meta">@StrictPropertyDecorator</span> <span class="comment">// fail</span></span><br><span class="line">  [PROPERTY_C] = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="应用场景-1"><a href="#应用场景-1" class="headerlink" title="应用场景"></a>应用场景</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> ValueMatchedKey&lt;Type, Value&gt; = &#123;</span><br><span class="line">  [Key <span class="keyword">in</span> keyof Type]: Type[Key] <span class="keyword">extends</span> Value ? Key : <span class="built_in">never</span>;</span><br><span class="line">&#125;[keyof Type];</span><br><span class="line"><span class="keyword">const</span> PrimaryKey =</span><br><span class="line">  <span class="function">() =&gt;</span></span><br><span class="line">  &lt;Entity&gt;<span class="function">(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">    entityPrototype: Entity,</span></span></span><br><span class="line"><span class="params"><span class="function">    field: ValueMatchedKey&lt;Entity, <span class="built_in">number</span>&gt; | ValueMatchedKey&lt;Entity, <span class="built_in">string</span>&gt;</span></span></span><br><span class="line"><span class="params"><span class="function">  </span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>
 
