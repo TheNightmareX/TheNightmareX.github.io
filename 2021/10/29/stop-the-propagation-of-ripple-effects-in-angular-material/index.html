@@ -20,29 +20,33 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"thenightmarex.github.io","root":"/blogs/","images":"/blogs/images","scheme":"Mist","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/blogs/js/config.js"></script>
-<meta name="description" content="需要 但不完全需要 对于广义上的访问控制，控制一个操作是否可以执行，当然必须绝对完全需要对于狭义上的访问控制，RBAC、CBAC 之类的访问控制，在大部分情况下是不需要的 RBAC、CBAC 对于大部分的 WebApp 而言，是既不合算也不适合的。你只需要在执行操作前加几个 if (xxx) throw xxx 就可以了。">
+<meta name="description" content="默认表现  期望表现">
 <meta property="og:type" content="article">
-<meta property="og:title" content="你真的需要访问控制吗">
-<meta property="og:url" content="https://thenightmarex.github.io/blogs/2021/10/04/do-you-really-need-access-control/index.html">
+<meta property="og:title" content="阻止 Angular Material 中涟漪效果的冒泡传播">
+<meta property="og:url" content="https://thenightmarex.github.io/blogs/2021/10/29/stop-the-propagation-of-ripple-effects-in-angular-material/index.html">
 <meta property="og:site_name" content="Just Blogs">
-<meta property="og:description" content="需要 但不完全需要 对于广义上的访问控制，控制一个操作是否可以执行，当然必须绝对完全需要对于狭义上的访问控制，RBAC、CBAC 之类的访问控制，在大部分情况下是不需要的 RBAC、CBAC 对于大部分的 WebApp 而言，是既不合算也不适合的。你只需要在执行操作前加几个 if (xxx) throw xxx 就可以了。">
+<meta property="og:description" content="默认表现  期望表现">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-10-04T09:39:55.000Z">
-<meta property="article:modified_time" content="2021-10-04T09:40:50.530Z">
+<meta property="og:image" content="https://thenightmarex.github.io/blogs/2021/10/29/stop-the-propagation-of-ripple-effects-in-angular-material/default-behavior.gif">
+<meta property="og:image" content="https://thenightmarex.github.io/blogs/2021/10/29/stop-the-propagation-of-ripple-effects-in-angular-material/expected-behavior.gif">
+<meta property="article:published_time" content="2021-10-29T15:59:09.000Z">
+<meta property="article:modified_time" content="2021-10-29T16:08:59.075Z">
 <meta property="article:author" content="Charles">
 <meta property="article:tag" content="Web">
-<meta property="article:tag" content="Backend">
+<meta property="article:tag" content="Frontend">
+<meta property="article:tag" content="Angular">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://thenightmarex.github.io/blogs/2021/10/29/stop-the-propagation-of-ripple-effects-in-angular-material/default-behavior.gif">
 
 
-<link rel="canonical" href="https://thenightmarex.github.io/blogs/2021/10/04/do-you-really-need-access-control/">
+<link rel="canonical" href="https://thenightmarex.github.io/blogs/2021/10/29/stop-the-propagation-of-ripple-effects-in-angular-material/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://thenightmarex.github.io/blogs/2021/10/04/do-you-really-need-access-control/","path":"2021/10/04/do-you-really-need-access-control/","title":"你真的需要访问控制吗"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://thenightmarex.github.io/blogs/2021/10/29/stop-the-propagation-of-ripple-effects-in-angular-material/","path":"2021/10/29/stop-the-propagation-of-ripple-effects-in-angular-material/","title":"阻止 Angular Material 中涟漪效果的冒泡传播"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>你真的需要访问控制吗 | Just Blogs</title>
+<title>阻止 Angular Material 中涟漪效果的冒泡传播 | Just Blogs</title>
   
 
 
@@ -107,7 +111,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -120,6 +124,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E8%A1%A8%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">默认表现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%9F%E6%9C%9B%E8%A1%A8%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">期望表现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">使用</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -202,7 +207,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2021/10/04/do-you-really-need-access-control/">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2021/10/29/stop-the-propagation-of-ripple-effects-in-angular-material/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/blogs/images/avatar.gif">
@@ -215,7 +220,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          你真的需要访问控制吗
+          阻止 Angular Material 中涟漪效果的冒泡传播
         </h1>
 
         <div class="post-meta-container">
@@ -225,10 +230,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2021-10-04 17:39:55 / 修改时间：17:40:50" itemprop="dateCreated datePublished" datetime="2021-10-04T17:39:55+08:00">2021-10-04</time>
+      <time title="创建时间：2021-10-29 23:59:09" itemprop="dateCreated datePublished" datetime="2021-10-29T23:59:09+08:00">2021-10-29</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-10-30 00:08:59" itemprop="dateModified" datetime="2021-10-30T00:08:59+08:00">2021-10-30</time>
+      </span>
 
   
 </div>
@@ -240,10 +251,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><strong>需要</strong></p>
-<p><strong>但不完全需要</strong></p>
-<p>对于广义上的访问控制，控制一个操作是否可以执行，当然必须绝对完全需要<br>对于狭义上的访问控制，RBAC、CBAC 之类的访问控制，在大部分情况下是不需要的</p>
-<p>RBAC、CBAC 对于大部分的 WebApp 而言，是既不合算也不适合的。你只需要在执行操作前加几个 <code>if (xxx) throw xxx</code> 就可以了。</p>
+        <h3 id="默认表现"><a href="#默认表现" class="headerlink" title="默认表现"></a>默认表现</h3><img src="/blogs/2021/10/29/stop-the-propagation-of-ripple-effects-in-angular-material/default-behavior.gif" class="">
+
+<h3 id="期望表现"><a href="#期望表现" class="headerlink" title="期望表现"></a>期望表现</h3><img src="/blogs/2021/10/29/stop-the-propagation-of-ripple-effects-in-angular-material/expected-behavior.gif" class="">
+
+<span id="more"></span>
+
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Stop the propagation of the ripple effect.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * The ripple renderer listens to &quot;mousedown&quot; and &quot;touchstart&quot; events:</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * https://github.com/angular/components/blob/202c667e3439e7412fed981993aa51ee2b0f41f6/src/material/core/ripple/ripple-renderer.ts#L46</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Directive</span>(&#123;</span><br><span class="line">  <span class="attr">selector</span>: <span class="string">&quot;[appStopRipplePropagation]&quot;</span>,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">StopRipplePropagationDirective</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@HostListener</span>(<span class="string">&quot;mousedown&quot;</span>, [<span class="string">&quot;$event&quot;</span>])</span><br><span class="line">  <span class="function"><span class="title">handleMouseDown</span>(<span class="params">event: MouseEvent</span>)</span> &#123;</span><br><span class="line">    event.stopPropagation();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@HostListener</span>(<span class="string">&quot;touchstart&quot;</span>, [<span class="string">&quot;$event&quot;</span>])</span><br><span class="line">  <span class="function"><span class="title">handleTouchStart</span>(<span class="params">event: TouchEvent</span>)</span> &#123;</span><br><span class="line">    event.stopPropagation();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;mat-action-list&gt;</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">button</span> <span class="attr">mat-list-item</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">fxFlex</span>&gt;</span>Profile<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">mat-icon-button</span> <span class="attr">appStopRipplePropagation</span>&gt;</span> // &lt;------ HERE</span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">mat-icon</span>&gt;</span>edit<span class="tag">&lt;/<span class="name">mat-icon</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">mat-action-list</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -254,21 +270,19 @@
     <footer class="post-footer">
           <div class="post-tags">
               <a href="/blogs/tags/Web/" rel="tag"># Web</a>
-              <a href="/blogs/tags/Backend/" rel="tag"># Backend</a>
+              <a href="/blogs/tags/Frontend/" rel="tag"># Frontend</a>
+              <a href="/blogs/tags/Angular/" rel="tag"># Angular</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/blogs/2021/09/14/route-override-in-nestjs/" rel="prev" title="NestJS中的路由覆盖">
-                  <i class="fa fa-chevron-left"></i> NestJS中的路由覆盖
+                <a href="/blogs/2021/10/04/error-message-style/" rel="prev" title="错误消息风格">
+                  <i class="fa fa-chevron-left"></i> 错误消息风格
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/blogs/2021/10/04/strictly-typed-decorators/" rel="next" title="类型严格的装饰器">
-                  类型严格的装饰器 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -318,7 +332,7 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"TheNightmareX","repo":"blogs","client_id":"c98a929e94d75fcf613d","client_secret":"c2490673eb568f6abdf92b38640e02ac66e7c75c","admin_user":"TheNightmareX","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"fd00e06386e49fa5df53863fb80a8eb7"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"TheNightmareX","repo":"blogs","client_id":"c98a929e94d75fcf613d","client_secret":"c2490673eb568f6abdf92b38640e02ac66e7c75c","admin_user":"TheNightmareX","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"608461c2cdab8ae1d42d481e396a0525"}</script>
 <script src="/blogs/js/third-party/comments/gitalk.js"></script>
 
 </body>
