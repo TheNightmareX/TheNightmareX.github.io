@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blogs/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blogs/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blogs/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blogs/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blogs/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"thenightmarex.github.io","root":"/blogs/","images":"/blogs/images","scheme":"Mist","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/blogs/js/config.js"></script>
+<meta name="description" content="折腾了半个下午……">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Nest中为MikroORM支持多查询请求">
+<meta property="og:url" content="https://thenightmarex.github.io/blogs/2021/11/14/support-multi-query-requests-for-mikroorm-in-nest/index.html">
+<meta property="og:site_name" content="Just Blogs">
+<meta property="og:description" content="折腾了半个下午……">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-14T15:47:04.000Z">
+<meta property="article:modified_time" content="2021-11-14T15:47:04.309Z">
+<meta property="article:author" content="Charles">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="Backend">
+<meta property="article:tag" content="ORM">
+<meta property="article:tag" content="Nest">
+<meta property="article:tag" content="MikroORM">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://thenightmarex.github.io/blogs/2021/11/14/support-multi-query-requests-for-mikroorm-in-nest/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://thenightmarex.github.io/blogs/2021/11/14/support-multi-query-requests-for-mikroorm-in-nest/","path":"2021/11/14/support-multi-query-requests-for-mikroorm-in-nest/","title":"在Nest中为MikroORM支持多查询请求"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>在Nest中为MikroORM支持多查询请求 | Just Blogs</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/blogs/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/blogs/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Just Blogs</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/blogs/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/blogs/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/blogs/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-about"><a href="/blogs/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Charles</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blogs/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/blogs/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/TheNightmareX" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;TheNightmareX" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:Char2s@outlook.com" title="E-Mail → mailto:Char2s@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://frank3215.github.io/" title="https:&#x2F;&#x2F;frank3215.github.io&#x2F;" rel="noopener" target="_blank">OI-Wiki</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://poppython.com/" title="https:&#x2F;&#x2F;poppython.com&#x2F;" rel="noopener" target="_blank">远子&Vina</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://thenightmarex.github.io/blogs/2021/11/14/support-multi-query-requests-for-mikroorm-in-nest/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blogs/images/avatar.gif">
+      <meta itemprop="name" content="Charles">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在Nest中为MikroORM支持多查询请求
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-14 23:47:04" itemprop="dateCreated datePublished" datetime="2021-11-14T23:47:04+08:00">2021-11-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>折腾了半个下午……</p>
+<span id="more"></span>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; EntityManager &#125; <span class="keyword">from</span> <span class="string">&quot;@mikro-orm/core&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">  CallHandler,</span><br><span class="line">  ExecutionContext,</span><br><span class="line">  Injectable,</span><br><span class="line">  NestInterceptor,</span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">&quot;@nestjs/common&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AsyncLocalStorage &#125; <span class="keyword">from</span> <span class="string">&quot;async_hooks&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Observable &#125; <span class="keyword">from</span> <span class="string">&quot;rxjs&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Support multi-query requests for MikroORM.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * ### Previous Behavior</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * MikroORM uses the _UnitOfWork_ and _IdentityMap_ pattern, which require the</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link </span>EntityManager&#125; to be isolated between actions.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * We can use `em.fork()` to get a new &#123;<span class="doctag">@link </span>EntityManager&#125; inheriting the</span></span><br><span class="line"><span class="comment"> * original one&#x27;s configurations but having its own _UnitOfWork_ and</span></span><br><span class="line"><span class="comment"> * _IdentityMap_ storage.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * But when we use a DI framework, like Nest&#x27;s built-in one, it will be hard to</span></span><br><span class="line"><span class="comment"> * achieve this by simply forking one because the DI framework always gives us</span></span><br><span class="line"><span class="comment"> * a same &#123;<span class="doctag">@link </span>EntityManager&#125; instance. So MikroORM have another solution,</span></span><br><span class="line"><span class="comment"> * that&#x27;s the Context, which is made possible by the &#123;<span class="doctag">@link </span>AsyncLocalStorage&#125;.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * We can provide a context object as the first parameter of</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link </span>AsyncLocalStorage.run&#125; and a function as the second one. Then the</span></span><br><span class="line"><span class="comment"> * function will be invoked inside the context, which means we can get the</span></span><br><span class="line"><span class="comment"> * previous context object using &#123;<span class="doctag">@link </span>AsyncLocalStorage.getStore&#125;.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * So the new solution is to provide a fork of the original</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link </span>EntityManager&#125; as the context, and run other processes inside the</span></span><br><span class="line"><span class="comment"> * context. We will still use the original &#123;<span class="doctag">@link </span>EntityManager&#125;, but it will</span></span><br><span class="line"><span class="comment"> * check whether itself is inside a context and try to use the _UnitOfWork_</span></span><br><span class="line"><span class="comment"> * and _IdentityMap_ of the context &#123;<span class="doctag">@link </span>EntityManager&#125; instead of its own</span></span><br><span class="line"><span class="comment"> * ones. This can be easily achieved using middlewares:</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * ```ts</span></span><br><span class="line"><span class="comment"> * app.use((req, res, next) =&gt; &#123;</span></span><br><span class="line"><span class="comment"> *   storage.run(orm.em.fork(), next);</span></span><br><span class="line"><span class="comment"> * &#125;);</span></span><br><span class="line"><span class="comment"> * ```</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * MikroORM wrapped these steps into the &#123;<span class="doctag">@link </span>RequestContext&#125;, and will</span></span><br><span class="line"><span class="comment"> * by default apply a middleware automatically to achieve the isolation.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * ### The Issue</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * The middleware works well in most common use cases when there is only one</span></span><br><span class="line"><span class="comment"> * action in one request.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * But GraphQL supports multi-query requests. The client can send multiple</span></span><br><span class="line"><span class="comment"> * queries or mutations using an array and get an array of results. In a</span></span><br><span class="line"><span class="comment"> * multi-query request, multiple resolver methods will be invoked to execute</span></span><br><span class="line"><span class="comment"> * multiple actions. Guards, interceptors and so on will be invoked for each</span></span><br><span class="line"><span class="comment"> * resolver method, but middlewares will be invoked for only once during the</span></span><br><span class="line"><span class="comment"> * whole request. It means in a multi-query request, all the actions will share</span></span><br><span class="line"><span class="comment"> * a same &#123;<span class="doctag">@link </span>EntityManager&#125;, which works well in multiple queries but not</span></span><br><span class="line"><span class="comment"> * in multiple mutations because &#123;<span class="doctag">@link </span>EntityManager.flush&#125; may be invoked</span></span><br><span class="line"><span class="comment"> * when another flush is not completed and cause error.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * To solve this, we must create the context in interceptors because this is</span></span><br><span class="line"><span class="comment"> * the only place where we can get the `next` object. And also we should make</span></span><br><span class="line"><span class="comment"> * this interceptor to be invoked before any other interceptors to ensure the</span></span><br><span class="line"><span class="comment"> * other interceptors will be scoped to the context. Interceptors are invoked</span></span><br><span class="line"><span class="comment"> * after guards, so DB operations in guards are still not scoped to the context</span></span><br><span class="line"><span class="comment"> * created in the interceptor. Therefore, we must use both the middleware and</span></span><br><span class="line"><span class="comment"> * the interceptor and create the context with the `clear` option set to</span></span><br><span class="line"><span class="comment"> * `false`, so that the DB operations in guards will be scoped to the context</span></span><br><span class="line"><span class="comment"> * created in the middleware and those in other places will be scoped to</span></span><br><span class="line"><span class="comment"> * contexts created in the interceptor. And because we set `clear` to `false`,</span></span><br><span class="line"><span class="comment"> * the contexts created in the interceptor will inherit the _UnitOfWork_ and</span></span><br><span class="line"><span class="comment"> * _IdentityMap_ of the one created in the middleware, so that the</span></span><br><span class="line"><span class="comment"> * `request.user` object defined by the &#123;<span class="doctag">@link </span>AuthGuard&#125; will not be cleared</span></span><br><span class="line"><span class="comment"> * from the _IdentityMap_. The &#123;<span class="doctag">@link </span>RequestContext&#125; provided by MikroORM</span></span><br><span class="line"><span class="comment"> * should be abandoned because it sets `clear` to `true`.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * There are still some issues like we cannot invoke</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link </span>EntityManager.flush&#125; in guards, but that is acceptable for we usually</span></span><br><span class="line"><span class="comment"> * won&#x27;t do that in guards.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">MikroQueryContextInterceptor</span> <span class="title">implements</span> <span class="title">NestInterceptor</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> storage = <span class="keyword">new</span> AsyncLocalStorage&lt;EntityManager&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params"><span class="keyword">private</span> em: EntityManager</span>)</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">  intercept(context: ExecutionContext, <span class="attr">next</span>: CallHandler): Observable&lt;<span class="built_in">any</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Observable(<span class="function">(<span class="params">subscriber</span>) =&gt;</span> &#123;</span><br><span class="line">      MikroRequestContextInterceptor.storage.run(</span><br><span class="line">        <span class="built_in">this</span>.em.fork(&#123; <span class="attr">clear</span>: <span class="literal">false</span>, <span class="attr">useContext</span>: <span class="literal">true</span> &#125;),</span><br><span class="line">        <span class="function">() =&gt;</span> next.handle().subscribe(subscriber)</span><br><span class="line">      );</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blogs/tags/Web/" rel="tag"># Web</a>
+              <a href="/blogs/tags/Backend/" rel="tag"># Backend</a>
+              <a href="/blogs/tags/ORM/" rel="tag"># ORM</a>
+              <a href="/blogs/tags/Nest/" rel="tag"># Nest</a>
+              <a href="/blogs/tags/MikroORM/" rel="tag"># MikroORM</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/blogs/2021/10/29/stop-the-propagation-of-ripple-effects-in-angular-material/" rel="prev" title="阻止 Angular Material 中涟漪效果的冒泡传播">
+                  <i class="fa fa-chevron-left"></i> 阻止 Angular Material 中涟漪效果的冒泡传播
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Charles</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/blogs/js/comments.js"></script><script src="/blogs/js/utils.js"></script><script src="/blogs/js/motion.js"></script><script src="/blogs/js/schemes/muse.js"></script><script src="/blogs/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"TheNightmareX","repo":"blogs","client_id":"c98a929e94d75fcf613d","client_secret":"c2490673eb568f6abdf92b38640e02ac66e7c75c","admin_user":"TheNightmareX","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"216deda4bbfe57af5caf21279f92659f"}</script>
+<script src="/blogs/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
